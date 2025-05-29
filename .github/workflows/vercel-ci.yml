@@ -39,4 +39,5 @@ jobs:
       - run: vercel pull --yes --environment=production --token $VERCEL_TOKEN
       - run: npm ci
       - run: npm run build
+      - run: vercel build --yes
       - run: vercel deploy --prebuilt --prod --token $VERCEL_TOKEN
