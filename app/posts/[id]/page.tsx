@@ -49,7 +49,7 @@ export default async function Post({ params }: { params: Promise<{ id: string }>
           {post.content ? (
             <p>{post.content}</p>
           ) : (
-            <p className="italic text-gray-500">No content available for this post.</p>
+            <p className="italic text-gray-500">No content available for this club.</p>
           )}
         </div>
       </article>
@@ -60,7 +60,7 @@ export default async function Post({ params }: { params: Promise<{ id: string }>
           type="submit"
           className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
         >
-          Delete Post
+          Delete Club
         </button>
       </form>
     </div>

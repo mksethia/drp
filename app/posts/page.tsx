@@ -56,7 +56,7 @@ function PostsList() {
       ) : (
         <>
           {posts.length === 0 ? (
-            <p className="text-gray-600">No posts available.</p>
+            <p className="text-gray-600">No Clubs available.</p>
           ) : (
             <ul className="space-y-6 w-full max-w-4xl mx-auto">
               {posts.map((post) => (
