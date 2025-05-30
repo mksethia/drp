@@ -8,7 +8,7 @@ import { authOptions } from "@/auth";
 export async function createPost(formData: FormData) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
-    throw new Error("You must be logged in to create a post");
+    throw new Error("You must be logged in to add a club");
   }
 
   await prisma.post.create({
