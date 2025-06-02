@@ -5,27 +5,29 @@ import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
 
-// NOTE: In Next.js App Router, page components can receive `searchParams` as props.
-interface PageProps {
-  searchParams: { sport?: string };
-}
-
-export default async function Home({ searchParams }: PageProps) {
-  // 1. Enforce your existing “if no post table, go to /setup” logic.
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  // 1. Keep your existing “if no post table, go to /setup” logic.
   const tableExists = await checkPostTableExists();
   if (!tableExists) {
     redirect("/setup");
   }
 
-  // 2. Read `sport` from the query string. If absent, treat as empty string.
-  const sportQuery = searchParams.sport?.trim() || "";
+  // 2. Normalize searchParams.sport: it might be `string | string[] | undefined`.
+  let rawSport = searchParams.sport;
+  if (Array.isArray(rawSport)) {
+    // If Next gave us an array (e.g. ?sport=Foo&sport=Bar), just take the first slice.
+    rawSport = rawSport[0];
+  }
+  const sportQuery = rawSport?.trim() || "";
 
-  // 3. Fetch clubs. If `sportQuery` is non-empty, filter by `sport` contains (case-insensitive).
-  //    Otherwise, you can choose to fetch all clubs, or none. Here we default to “all” when empty.
+  // 3. Run your Prisma query exactly as before.
   const clubs = await prisma.club.findMany({
     where: sportQuery
       ? {
-          // partial match, case-insensitive
           sport: {
             contains: sportQuery,
             mode: "insensitive",
@@ -33,7 +35,7 @@ export default async function Home({ searchParams }: PageProps) {
         }
       : {},
     orderBy: { name: "asc" },
-    take: 50, // limit to 50 results just in case
+    take: 50,
   });
 
   return (
