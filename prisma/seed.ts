@@ -1,39 +1,50 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+// prisma/seed.ts
 
-const prisma = new PrismaClient();
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
 async function main() {
-  // Create 5 users with hashed passwords
-  const users = await Promise.all([
-    prisma.user.create({
-      data: {
-        email: 'alex@example.com',
-        name: 'Alex',
-        password: await bcrypt.hash('password123', 10),
-      },
-    }),
-  ]);
+  const clubsData = [
+    { name: 'Red Tigers Football Club',         sport: 'Football'      },
+    { name: 'Blue Dolphins Swimming Club',      sport: 'Swimming'      },
+    { name: 'Golden Eagles Basketball Club',    sport: 'Basketball'    },
+    { name: 'Green Hornets Rugby Club',         sport: 'Rugby'         },
+    { name: 'Black Panthers Boxing Club',       sport: 'Boxing'        },
+    { name: 'White Knights Tennis Club',        sport: 'Tennis'        },
+    { name: 'Storm Chasers Cricket Club',       sport: 'Cricket'       },
+    { name: 'Mountain Goats Hiking Club',       sport: 'Hiking'        },
+    { name: 'City Cyclones Cycling Club',       sport: 'Cycling'       },
+    { name: 'Ocean Waves Surfing Club',         sport: 'Surfing'       },
+    { name: 'Silver Swans Badminton Club',      sport: 'Badminton'     },
+    { name: 'Iron Giants Weightlifting Club',   sport: 'Weightlifting' },
+    { name: 'Purple Dragons Martial Arts Club', sport: 'Martial Arts'  },
+    { name: 'Sunnyvale Golf Club',              sport: 'Golf'          },
+    { name: 'City Hoppers Volleyball Club',     sport: 'Volleyball'    },
+    { name: 'Lakeside Rowers Rowing Club',      sport: 'Rowing'        },
+    { name: 'Sunset Sailors Sailing Club',      sport: 'Sailing'       },
+    { name: 'Royal Equines Equestrian Club',    sport: 'Equestrian'    },
+    { name: 'Canyon Climbers Climbing Club',    sport: 'Climbing'      },
+    { name: 'Wind Riders Kitesurfing Club',     sport: 'Kitesurfing'   },
+    { name: 'Shadow Fencers Fencing Club',      sport: 'Fencing'       },
+    { name: 'Peak Performers Gymnastics Club',  sport: 'Gymnastics'    },
+    { name: 'City Sharks Table Tennis Club',    sport: 'Table Tennis'  },
+    { name: 'Valley Runners Marathon Club',     sport: 'Running'       },
+    { name: 'Urban Yogis Yoga Club',            sport: 'Yoga'          },
+  ]
 
-  const userIdMapping = {
-    alex: users[0].id,
-  };
+  await prisma.club.createMany({
+    data: clubsData,
+    skipDuplicates: true,
+  })
 
-  // Create 15 posts distributed among users
-  await prisma.post.createMany({
-    data: [
-    ],
-  });
-
-  console.log('Seeding completed.');
+  console.log(`✅ Inserted ${clubsData.length} clubs into the database.`)
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect();
+  .catch((e) => {
+    console.error(e)
+    process.exit(1)
   })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
