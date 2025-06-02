@@ -2,7 +2,6 @@
 export const dynamic = "force-dynamic"; // disable SSG/ISR so that searchParams always re-run on each request
 
 import prisma from "@/lib/prisma";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
 
