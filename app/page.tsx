@@ -1,30 +1,33 @@
-// app/page.tsx (or .jsx)
-export const dynamic = "force-dynamic"; // disable SSG/ISR so that searchParams always re-run on each request
+// app/page.tsx
+export const dynamic = "force-dynamic"; // disable SSG/ISR
 
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
 
 export default async function Home({
+  // Note: Type `searchParams` as a Promise of a record
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  // 1. Keep your existing “if no post table, go to /setup” logic.
+  // 1. Check for your existing “if no post table, go to /setup” logic
   const tableExists = await checkPostTableExists();
   if (!tableExists) {
     redirect("/setup");
   }
 
-  // 2. Normalize searchParams.sport: it might be `string | string[] | undefined`.
-  let rawSport = searchParams.sport;
+  // 2. Await `searchParams` because Next.js passes it in as a Promise
+  const sp = await searchParams;
+  let rawSport = sp.sport;
+
   if (Array.isArray(rawSport)) {
-    // If Next gave us an array (e.g. ?sport=Foo&sport=Bar), just take the first slice.
+    // If someone did `?sport=Foo&sport=Bar`, just take the first
     rawSport = rawSport[0];
   }
   const sportQuery = rawSport?.trim() || "";
 
-  // 3. Run your Prisma query exactly as before.
+  // 3. Run your Prisma query exactly as before
   const clubs = await prisma.club.findMany({
     where: sportQuery
       ? {
@@ -40,15 +43,9 @@ export default async function Home({
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-24 px-8">
-      {/* Page title */}
       <h1 className="text-5xl font-extrabold mb-6 text-[#333333]">Clubs</h1>
 
-      {/* 4. SEARCH BAR FORM */}
-      {/* 
-          - method="GET" ensures that typing in the input and hitting Enter
-            will append ?sport=… to the URL and re-render this page server-side.
-          - We default the input’s value to whatever `sportQuery` is, so users see their search term.
-      */}
+      {/* ─── SEARCH FORM ─────────────────────────────────────────────────────── */}
       <form method="GET" className="w-full max-w-md mb-12">
         <label htmlFor="sportSearch" className="sr-only">
           Search by sport
@@ -71,7 +68,7 @@ export default async function Home({
         </div>
       </form>
 
-      {/* 5. Show a message if no `sport` was entered */}
+      {/* ─── CONDITIONAL MESSAGES ───────────────────────────────────────────── */}
       {sportQuery === "" ? (
         <p className="text-gray-600 mb-8">Type a sport above and hit Enter to search.</p>
       ) : clubs.length === 0 ? (
@@ -85,7 +82,7 @@ export default async function Home({
         </p>
       )}
 
-      {/* 6. Render matching clubs as cards */}
+      {/* ─── RENDER CLUB CARDS ────────────────────────────────────────────────── */}
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
         {clubs.map((club) => (
           <div
