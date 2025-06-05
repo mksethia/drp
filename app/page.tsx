@@ -3,7 +3,7 @@
 export const dynamic = "force-dynamic";
 
 import prisma from "@/lib/prisma";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
 import Link from "next/link";
 
