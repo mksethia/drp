@@ -1,33 +1,56 @@
-import prisma from "@/lib/prisma";
-import { notFound } from "next/navigation";
+export const dynamic = "force-dynamic"; // This disables SSG and ISR
 
-export default async function ClubDetail({ params }: { params: { id: string } }) {
-  const club = await prisma.club.findUnique({
-    where: {
-      id: parseInt(params.id),
-    },
+import prisma from "@/lib/prisma";
+import { notFound, redirect } from "next/navigation";
+
+export default async function Post({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const postId = parseInt(id);
+
+  const post = await prisma.club.findUnique({
+    where: { id: postId },
   });
 
-  if (!club) notFound();
+  if (!post) {
+    notFound();
+  }
+
+  // Server action to delete the post
+  async function deletePost() {
+    "use server";
+
+    await prisma.post.delete({
+      where: {
+        id: postId,
+      },
+    });
+
+    redirect("/posts");
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-8">
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-xl w-full">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">{club.name}</h1>
-        <p className="text-lg text-gray-700">
-          <strong>Sport:</strong> {club.sport}
-        </p>
-        <p className="text-lg text-gray-700 mt-2">
-          <strong>Distance:</strong> {club.distance} mi
-        </p>
-        <p className="text-lg text-gray-700 mt-2">
-          <strong>Experience Level:</strong> {club.level}
-        </p>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-8">
+      <article className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-8">
+        {/* Post Title */}
+        <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
+          {post.name}
+        </h1>
 
-        <a href="/app" className="mt-6 inline-block text-indigo-600 hover:underline">
-          ← Back to Clubs
-        </a>
-      </div>
+        {/* Author Information */}
+        <p className="text-lg text-gray-600 mb-4">
+          Sport: <span className="font-medium text-gray-800">{post.sport || "Anonymous"}</span>
+        </p>
+      </article>
+
+      {/* Delete Button */}
+      <form action={deletePost} className="mt-6">
+        <button
+          type="submit"
+          className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
+        >
+          Delete Club
+        </button>
+      </form>
     </div>
   );
 }
