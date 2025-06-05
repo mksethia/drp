@@ -11,16 +11,13 @@ export async function createPost(formData: FormData) {
     throw new Error("You must be logged in to add a club");
   }
 
-  const distance = parseFloat(formData.get("distance") as string);
-  if (isNaN(distance)) throw new Error("Invalid distance submitted");
-
   await prisma.club.create({
     data: {
       name: formData.get("title") as string,
       sport: formData.get("content") as string,
-      distance,
+      distance: parseFloat(formData.get("distance") as string),
     },
   });
 
   redirect("/posts");
-}
+} 
