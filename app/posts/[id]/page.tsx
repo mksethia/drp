@@ -38,7 +38,7 @@ export default async function Post({ params }: { params: Promise<{ id: string }>
 
         {/* Author Information */}
         <p className="text-lg text-gray-600 mb-4">
-          by <span className="font-medium text-gray-800">{post.sport || "Anonymous"}</span>
+          Sport: <span className="font-medium text-gray-800">{post.sport || "Anonymous"}</span>
         </p>
       </article>
 
