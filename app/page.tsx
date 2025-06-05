@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import prisma from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
 import Link from "next/link";
@@ -44,7 +45,7 @@ export default async function Home({
   const sortDirection = rawSort === "desc" ? "desc" : "asc";
 
   // ── 4) Build Prisma `where` clause including optional sport & experience filters ─
-  const whereClause: any = {};
+  const whereClause: Prisma.ClubWhereInput = {};
   if (sportQuery) {
     whereClause.sport = {
       contains: sportQuery,
