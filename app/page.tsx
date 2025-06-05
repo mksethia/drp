@@ -82,7 +82,7 @@ export default async function Home({
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
         {clubs.map((club) => (
-          <Link href={`/clubs/${club.id}`} key={club.id}>
+          <Link href={`/posts/${club.id}`} key={club.id}>
             <div className="border rounded-lg shadow-md bg-white p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
               <h2 className="text-2xl font-semibold text-gray-900 mb-2">{club.name}</h2>
               <p className="text-sm text-gray-500">
