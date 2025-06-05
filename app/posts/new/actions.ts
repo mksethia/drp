@@ -15,6 +15,7 @@ export async function createPost(formData: FormData) {
     data: {
       name: formData.get("title") as string,
       sport: formData.get("content") as string,
+      distance: parseFloat(formData.get("distance") as string),
     },
   });
 
