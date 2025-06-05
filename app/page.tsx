@@ -1,12 +1,9 @@
-"use client";
-
 export const dynamic = "force-dynamic";
 
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
 import Link from "next/link";
-
 
 export default async function Home({
   searchParams,
