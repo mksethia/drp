@@ -6,8 +6,8 @@ import Link from "next/link";
 
 interface Post {
   id: number;
-  name:  String
-  sport: String
+  name:  string
+  sport: string
 }
 
 // Disable static generation
