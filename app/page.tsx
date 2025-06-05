@@ -16,13 +16,23 @@ export default async function Home({
   }
 
   const sp = await searchParams;
-  let rawSport = sp.sport;
 
+  // ── 1) Sport filter (unchanged) ───────────────────────────────────────────────
+  let rawSport = sp.sport;
   if (Array.isArray(rawSport)) {
     rawSport = rawSport[0];
   }
   const sportQuery = rawSport?.trim() || "";
 
+  // ── 2) Sort‐by‐distance filter (new) ───────────────────────────────────────────
+  let rawSort = sp.sort;
+  if (Array.isArray(rawSort)) {
+    rawSort = rawSort[0];
+  }
+  // Default to "asc" unless explicitly "desc"
+  const sortDirection = rawSort === "desc" ? "desc" : "asc";
+
+  // ── 3) Fetch clubs, ordering by distance according to sortDirection ──────────
   const clubs = await prisma.club.findMany({
     where: sportQuery
       ? {
@@ -32,7 +42,7 @@ export default async function Home({
           },
         }
       : {},
-    orderBy: { name: "asc" },
+    orderBy: { distance: sortDirection },
     take: 50,
     select: {
       id: true,
@@ -48,7 +58,9 @@ export default async function Home({
       <h1 className="text-5xl font-extrabold mb-6 text-[#333333]">Clubs</h1>
 
       <form method="GET" className="w-full max-w-md mb-12">
-        <label htmlFor="sportSearch" className="sr-only">Search by sport</label>
+        <label htmlFor="sportSearch" className="sr-only">
+          Search by sport
+        </label>
         <div className="flex">
           <input
             type="text"
@@ -58,6 +70,17 @@ export default async function Home({
             defaultValue={sportQuery}
             className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
+
+          {/* ── New dropdown for “Sort by distance” ────────────────────────────── */}
+          <select
+            name="sort"
+            defaultValue={sortDirection}
+            className="px-4 py-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="asc">Distance ↑</option>
+            <option value="desc">Distance ↓</option>
+          </select>
+
           <button
             type="submit"
             className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-r-lg hover:bg-indigo-700 transition"
@@ -68,15 +91,22 @@ export default async function Home({
       </form>
 
       {sportQuery === "" ? (
-        <p className="text-gray-600 mb-8">Type a sport above and hit Enter to search.</p>
+        <p className="text-gray-600 mb-8">
+          Type a sport above, choose sort order, and hit Enter to search.
+        </p>
       ) : clubs.length === 0 ? (
         <p className="text-red-500 mb-8">
-          No clubs found matching “<span className="font-semibold">{sportQuery}</span>.”
+          No clubs found matching “
+          <span className="font-semibold">{sportQuery}</span>.”
         </p>
       ) : (
         <p className="text-gray-700 mb-4">
           Showing <span className="font-semibold">{clubs.length}</span> clubs for “
-          <span className="italic">{sportQuery}</span>”:
+          <span className="italic">{sportQuery}</span>”, sorted by distance (
+          <span className="font-semibold">
+            {sortDirection === "asc" ? "nearest first" : "farthest first"}
+          </span>
+          ):
         </p>
       )}
 
@@ -84,7 +114,9 @@ export default async function Home({
         {clubs.map((club) => (
           <Link href={`/posts/${club.id}`} key={club.id}>
             <div className="border rounded-lg shadow-md bg-white p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-2">{club.name}</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                {club.name}
+              </h2>
               <p className="text-sm text-gray-500">
                 Sport: <span className="font-medium">{club.sport}</span>
               </p>
@@ -92,7 +124,8 @@ export default async function Home({
                 Distance: <span className="font-medium">{club.distance} mi</span>
               </p>
               <p className="text-sm text-gray-500">
-                Experience Level: <span className="font-medium">{club.level}</span>
+                Experience Level:{" "}
+                <span className="font-medium">{club.level}</span>
               </p>
             </div>
           </Link>
