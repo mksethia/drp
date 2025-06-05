@@ -30,5 +30,5 @@ model Club {
   id    Int    @id @default(autoincrement())
   name  String
   sport String
-  distance Float
+  distance Float @default(0.0)
 }
