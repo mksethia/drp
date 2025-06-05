@@ -6,12 +6,8 @@ import Link from "next/link";
 
 interface Post {
   id: number;
-  title: string;
-  content?: string;
-  createdAt: string;
-  author?: {
-    name: string;
-  };
+  name:  String
+  sport: String
 }
 
 // Disable static generation
@@ -62,16 +58,9 @@ function PostsList() {
               {posts.map((post) => (
                 <li key={post.id} className="border p-6 rounded-lg shadow-md bg-white">
                   <Link href={`/posts/${post.id}`} className="text-2xl font-semibold text-gray-900 hover:underline">
-                    {post.title}
+                    {post.name}
                   </Link>
-                  <p className="text-sm text-gray-500">by {post.author?.name || "Anonymous"}</p>
-                  <p className="text-xs text-gray-400">
-                    {new Date(post.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
+                  <p className="text-sm text-gray-500">by {post.sport|| "Anonymous"}</p>
                 </li>
               ))}
             </ul>
