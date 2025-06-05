@@ -31,5 +31,6 @@ model Club {
   name  String
   sport String
   distance Float 
-  level String 
+  level String
+  imageUrl String?
 }

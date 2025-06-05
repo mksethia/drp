@@ -1,9 +1,14 @@
-export const dynamic = "force-dynamic"; // This disables SSG and ISR
-
+import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 
-export default async function Post({ params }: { params: Promise<{ id: string }> }) {
+export const dynamic = "force-dynamic";
+
+export default async function Post({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const postId = parseInt(id);
 
@@ -31,14 +36,46 @@ export default async function Post({ params }: { params: Promise<{ id: string }>
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-8">
       <article className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-8">
-        {/* Post Title */}
+        {/* Club Title */}
         <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
           {post.name}
         </h1>
 
-        {/* Author Information */}
+        {/* Sport */}
         <p className="text-lg text-gray-600 mb-4">
-          Sport: <span className="font-medium text-gray-800">{post.sport || "Anonymous"}</span>
+          Sport:{" "}
+          <span className="font-medium text-gray-800">
+            {post.sport || "Anonymous"}
+          </span>
+        </p>
+
+        {/* Club Image */}
+        {post.imageUrl && (
+          <div className="mb-6 w-full h-64 relative">
+            <Image
+              src={post.imageUrl}
+              alt={post.name}
+              fill
+              className="object-cover rounded-md"
+              // If you know the image dimensions, you can replace `fill` with width/height props:
+              // width={600}
+              // height={400}
+            />
+          </div>
+        )}
+
+        {/* Additional fields (distance, level, etc.) */}
+        <p className="text-lg text-gray-600">
+          Distance:{" "}
+          <span className="font-medium text-gray-800">
+            {post.distance ?? "N/A"} km
+          </span>
+        </p>
+        <p className="text-lg text-gray-600">
+          Level:{" "}
+          <span className="font-medium text-gray-800">
+            {post.level || "N/A"}
+          </span>
         </p>
       </article>
 
