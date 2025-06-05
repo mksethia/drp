@@ -11,11 +11,10 @@ export async function createPost(formData: FormData) {
     throw new Error("You must be logged in to add a club");
   }
 
-  await prisma.post.create({
+  await prisma.club.create({
     data: {
-      title: formData.get("title") as string,
-      content: formData.get("content") as string,
-      authorId: session.user.id,
+      name: formData.get("title") as string,
+      sport: formData.get("content") as string,
     },
   });
 

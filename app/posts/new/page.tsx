@@ -25,11 +25,11 @@ export default function NewPost() {
           />
         </div>
         <div>
-          <label htmlFor="content" className="block text-lg font-medium mb-2">Club Description</label>
+          <label htmlFor="content" className="block text-lg font-medium mb-2">Sport</label>
           <textarea
             id="content"
             name="content"
-            placeholder="Write Club Description here"
+            placeholder="Write Sport here"
             rows={6}
             className="w-full px-4 py-2 border rounded-lg"
           />
