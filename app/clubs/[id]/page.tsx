@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic"; // disables SSG and ISR
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 
-export default async function Post({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: string } }) {
   const postId = parseInt(params.id);
 
   const post = await prisma.club.findUnique({
