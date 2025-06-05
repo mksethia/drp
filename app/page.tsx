@@ -17,14 +17,14 @@ export default async function Home({
 
   const sp = await searchParams;
 
-  // ── 1) Sport filter (unchanged) ───────────────────────────────────────────────
+  // ── 1) Sport filter ─────────────────────────────────────────────────────────
   let rawSport = sp.sport;
   if (Array.isArray(rawSport)) {
     rawSport = rawSport[0];
   }
   const sportQuery = rawSport?.trim() || "";
 
-  // ── 2) Sort‐by‐distance filter (new) ───────────────────────────────────────────
+  // ── 2) Sort‐by‐distance filter ────────────────────────────────────────────────
   let rawSort = sp.sort;
   if (Array.isArray(rawSort)) {
     rawSort = rawSort[0];
@@ -32,16 +32,30 @@ export default async function Home({
   // Default to "asc" unless explicitly "desc"
   const sortDirection = rawSort === "desc" ? "desc" : "asc";
 
-  // ── 3) Fetch clubs, ordering by distance according to sortDirection ──────────
+  // ── 3) Experience‐level filter (new) ─────────────────────────────────────────
+  let rawLevel = sp.level;
+  if (Array.isArray(rawLevel)) {
+    rawLevel = rawLevel[0];
+  }
+  // Normalize to lowercase for comparison; empty string = “any level”
+  const levelQuery = rawLevel?.trim().toLowerCase() || "";
+
+  // ── 4) Build combined `where` clause ────────────────────────────────────────
+  const where: Record<string, any> = {};
+  if (sportQuery) {
+    where.sport = {
+      contains: sportQuery,
+      mode: "insensitive",
+    };
+  }
+  if (levelQuery && levelQuery !== "any") {
+    // We assume in the database, `level` is stored in lowercase (e.g. "beginner", "intermediate", etc.)
+    where.level = levelQuery;
+  }
+
+  // ── 5) Fetch clubs, ordering by distance ─────────────────────────────────────
   const clubs = await prisma.club.findMany({
-    where: sportQuery
-      ? {
-          sport: {
-            contains: sportQuery,
-            mode: "insensitive",
-          },
-        }
-      : {},
+    where,
     orderBy: { distance: sortDirection },
     take: 50,
     select: {
@@ -71,7 +85,7 @@ export default async function Home({
             className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
-          {/* ── New dropdown for “Sort by distance” ────────────────────────────── */}
+          {/* Sort‐by‐distance dropdown */}
           <select
             name="sort"
             defaultValue={sortDirection}
@@ -79,6 +93,19 @@ export default async function Home({
           >
             <option value="asc">Distance ↑</option>
             <option value="desc">Distance ↓</option>
+          </select>
+
+          {/* ── New dropdown for “Experience Level” ────────────────────────────── */}
+          <select
+            name="level"
+            defaultValue={levelQuery || "any"}
+            className="px-4 py-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="any">Any Level</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+            <option value="open to all">Open to All</option>
           </select>
 
           <button
@@ -90,19 +117,42 @@ export default async function Home({
         </div>
       </form>
 
-      {sportQuery === "" ? (
+      {/* ── Conditional Messages ──────────────────────────────────────────────────── */}
+      {sportQuery === "" && levelQuery === "" ? (
         <p className="text-gray-600 mb-8">
-          Type a sport above, choose sort order, and hit Enter to search.
+          Type a sport and/or select a level above, choose sort order, and hit Enter to search.
         </p>
       ) : clubs.length === 0 ? (
         <p className="text-red-500 mb-8">
-          No clubs found matching “
-          <span className="font-semibold">{sportQuery}</span>.”
+          No clubs found matching{" "}
+          {sportQuery && (
+            <>
+              “<span className="font-semibold">{sportQuery}</span>”
+              {levelQuery && levelQuery !== "any" && ", "}
+            </>
+          )}
+          {levelQuery && levelQuery !== "any" && (
+            <>
+              level <span className="font-semibold">{levelQuery}</span>
+            </>
+          )}
+          .
         </p>
       ) : (
         <p className="text-gray-700 mb-4">
-          Showing <span className="font-semibold">{clubs.length}</span> clubs for “
-          <span className="italic">{sportQuery}</span>”, sorted by distance (
+          Showing <span className="font-semibold">{clubs.length}</span> clubs{" "}
+          {sportQuery && (
+            <>
+              for “<span className="italic">{sportQuery}</span>”
+              {levelQuery && levelQuery !== "any" && " "}
+            </>
+          )}
+          {levelQuery && levelQuery !== "any" && (
+            <>
+              at <span className="font-semibold">{levelQuery}</span> level
+            </>
+          )}
+          , sorted by distance (
           <span className="font-semibold">
             {sortDirection === "asc" ? "nearest first" : "farthest first"}
           </span>
