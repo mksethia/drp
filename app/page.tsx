@@ -7,50 +7,6 @@ import { notFound, redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
 import Link from "next/link";
 
-export async function Post({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const postId = parseInt(id);
-
-  const post = await prisma.club.findUnique({
-    where: { id: postId },
-  });
-
-  if (!post) {
-    notFound();
-  }
-
-  async function deletePost() {
-    "use server";
-
-    await prisma.post.delete({
-      where: {
-        id: postId,
-      },
-    });
-
-    redirect("/app");
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-8">
-      <article className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-5xl font-extrabold text-gray-900 mb-4">{post.name}</h1>
-        <p className="text-lg text-gray-600 mb-4">
-          Sport: <span className="font-medium text-gray-800">{post.sport || "Anonymous"}</span>
-        </p>
-      </article>
-
-      <form action={deletePost} className="mt-6">
-        <button
-          type="submit"
-          className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
-        >
-          Delete Club
-        </button>
-      </form>
-    </div>
-  );
-}
 
 export default async function Home({
   searchParams,
