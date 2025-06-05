@@ -97,6 +97,10 @@ export default async function Home({
             <p className="text-sm text-gray-500 mt-2">
               Distance: <span className="font-medium">{club.distance} mi</span>
             </p>
+
+            <p className="text-sm text-gray-500">
+              Experience Level: <span className="font-medium">{club.level}</span>
+            </p>
           </div>
         ))}
       </div>
