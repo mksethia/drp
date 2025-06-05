@@ -1,4 +1,3 @@
-import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 
@@ -51,15 +50,11 @@ export default async function Post({
 
         {/* Club Image */}
         {post.imageUrl && (
-          <div className="mb-6 w-full h-64 relative">
-            <Image
+          <div className="mb-6">
+            <img
               src={post.imageUrl}
               alt={post.name}
-              fill
-              className="object-cover rounded-md"
-              // If you know the image dimensions, you can replace `fill` with width/height props:
-              // width={600}
-              // height={400}
+              className="w-full h-64 object-cover rounded-md"
             />
           </div>
         )}
