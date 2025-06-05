@@ -39,6 +39,13 @@ export default async function Home({
       : {},
     orderBy: { name: "asc" },
     take: 50,
+    select: {
+      id: true,
+      name: true,
+      sport: true,
+      distance: true,
+      level: true, // Ensure 'level' is selected
+    },
   });
 
   return (
