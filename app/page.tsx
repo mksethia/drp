@@ -17,14 +17,25 @@ export default async function Home({
 
   const sp = await searchParams;
 
-  // ── 1) Sport filter ─────────────────────────────────────────────────────────
+  // ── 1) Sport filter (unchanged) ───────────────────────────────────────────────
   let rawSport = sp.sport;
   if (Array.isArray(rawSport)) {
     rawSport = rawSport[0];
   }
   const sportQuery = rawSport?.trim() || "";
 
-  // ── 2) Sort‐by‐distance filter ────────────────────────────────────────────────
+  // ── 2) Experience‐level filter (new) ─────────────────────────────────────────
+  let rawExperience = sp.experience;
+  if (Array.isArray(rawExperience)) {
+    rawExperience = rawExperience[0];
+  }
+  // Normalize to one of these exact strings, or empty for “any level”
+  const allowedExperiences = ["beginner", "intermediate", "advanced", "open to all"];
+  const experienceFilter = allowedExperiences.includes(rawExperience?.toLowerCase() || "")
+    ? rawExperience!.toLowerCase()
+    : "";
+
+  // ── 3) Sort‐by‐distance filter (unchanged) ───────────────────────────────────
   let rawSort = sp.sort;
   if (Array.isArray(rawSort)) {
     rawSort = rawSort[0];
@@ -32,30 +43,27 @@ export default async function Home({
   // Default to "asc" unless explicitly "desc"
   const sortDirection = rawSort === "desc" ? "desc" : "asc";
 
-  // ── 3) Experience‐level filter (new) ─────────────────────────────────────────
-  let rawLevel = sp.level;
-  if (Array.isArray(rawLevel)) {
-    rawLevel = rawLevel[0];
-  }
-  // Normalize to lowercase for comparison; empty string = “any level”
-  const levelQuery = rawLevel?.trim().toLowerCase() || "";
-
-  // ── 4) Build combined `where` clause ────────────────────────────────────────
-  const where: Record<string, any> = {};
+  // ── 4) Build Prisma `where` clause including optional sport & experience filters ─
+  const whereClause: any = {};
   if (sportQuery) {
-    where.sport = {
+    whereClause.sport = {
       contains: sportQuery,
       mode: "insensitive",
     };
   }
-  if (levelQuery && levelQuery !== "any") {
-    // We assume in the database, `level` is stored in lowercase (e.g. "beginner", "intermediate", etc.)
-    where.level = levelQuery;
+  if (experienceFilter) {
+    // Assuming your `level` field in the database is stored in lowercase,
+    // or you want to match case‐insensitively. If you store it capitalized,
+    // adjust mode accordingly or map “open to all” to exactly that string.
+    whereClause.level = {
+      equals: experienceFilter,
+      mode: "insensitive",
+    };
   }
 
-  // ── 5) Fetch clubs, ordering by distance ─────────────────────────────────────
+  // ── 5) Fetch clubs, ordering by distance according to sortDirection ────────────
   const clubs = await prisma.club.findMany({
-    where,
+    where: whereClause,
     orderBy: { distance: sortDirection },
     take: 50,
     select: {
@@ -75,17 +83,31 @@ export default async function Home({
         <label htmlFor="sportSearch" className="sr-only">
           Search by sport
         </label>
-        <div className="flex">
+        <div className="flex space-x-2">
+          {/* ── Sport Input ─────────────────────────────────────────────── */}
           <input
             type="text"
             name="sport"
             id="sportSearch"
-            placeholder="Search by sport (e.g. Football)"
+            placeholder="Sport (e.g. Football)"
             defaultValue={sportQuery}
             className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
-          {/* Sort‐by‐distance dropdown */}
+          {/* ── Experience‐Level Dropdown ───────────────────────────────── */}
+          <select
+            name="experience"
+            defaultValue={experienceFilter}
+            className="px-4 py-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">All Levels</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+            <option value="open to all">Open to All</option>
+          </select>
+
+          {/* ── Sort‐by‐Distance Dropdown ─────────────────────────────────── */}
           <select
             name="sort"
             defaultValue={sortDirection}
@@ -93,19 +115,6 @@ export default async function Home({
           >
             <option value="asc">Distance ↑</option>
             <option value="desc">Distance ↓</option>
-          </select>
-
-          {/* ── New dropdown for “Experience Level” ────────────────────────────── */}
-          <select
-            name="level"
-            defaultValue={levelQuery || "any"}
-            className="px-4 py-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="any">Any Level</option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-            <option value="open to all">Open to All</option>
           </select>
 
           <button
@@ -117,10 +126,10 @@ export default async function Home({
         </div>
       </form>
 
-      {/* ── Conditional Messages ──────────────────────────────────────────────────── */}
-      {sportQuery === "" && levelQuery === "" ? (
+      {/* ── Feedback Text ─────────────────────────────────────────────────────────── */}
+      {sportQuery === "" && experienceFilter === "" ? (
         <p className="text-gray-600 mb-8">
-          Type a sport and/or select a level above, choose sort order, and hit Enter to search.
+          Type a sport, choose an experience level (optional), sort order, and hit Search.
         </p>
       ) : clubs.length === 0 ? (
         <p className="text-red-500 mb-8">
@@ -128,28 +137,31 @@ export default async function Home({
           {sportQuery && (
             <>
               “<span className="font-semibold">{sportQuery}</span>”
-              {levelQuery && levelQuery !== "any" && ", "}
+              {experienceFilter && " "}
             </>
           )}
-          {levelQuery && levelQuery !== "any" && (
+          {experienceFilter && (
             <>
-              level <span className="font-semibold">{levelQuery}</span>
+              <span className="font-semibold capitalize">{experienceFilter}</span>{" "}
             </>
           )}
-          .
+          {!(sportQuery || experienceFilter)
+            ? "these filters."
+            : "with those filters."}
         </p>
       ) : (
         <p className="text-gray-700 mb-4">
-          Showing <span className="font-semibold">{clubs.length}</span> clubs{" "}
+          Showing <span className="font-semibold">{clubs.length}</span> club
+          {clubs.length > 1 ? "s" : ""}{" "}
           {sportQuery && (
             <>
               for “<span className="italic">{sportQuery}</span>”
-              {levelQuery && levelQuery !== "any" && " "}
+              {experienceFilter && ", "}
             </>
           )}
-          {levelQuery && levelQuery !== "any" && (
+          {experienceFilter && (
             <>
-              at <span className="font-semibold">{levelQuery}</span> level
+              at <span className="font-semibold capitalize">{experienceFilter}</span> level
             </>
           )}
           , sorted by distance (
@@ -175,7 +187,7 @@ export default async function Home({
               </p>
               <p className="text-sm text-gray-500">
                 Experience Level:{" "}
-                <span className="font-medium">{club.level}</span>
+                <span className="font-medium capitalize">{club.level}</span>
               </p>
             </div>
           </Link>
