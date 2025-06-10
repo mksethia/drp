@@ -30,7 +30,8 @@ model Club {
   id    Int    @id @default(autoincrement())
   name  String
   sport String
-  distance Float 
   level String
   imageUrl String?
+  latitude Float
+  longitude Float
 }
