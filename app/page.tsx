@@ -1,3 +1,5 @@
+"use client";
+
 export const dynamicSetting = "force-dynamic";
 
 import prisma from "@/lib/prisma";
