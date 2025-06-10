@@ -1,7 +1,7 @@
 'use client';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import type { Club } from '@/lib/prisma'; // adjust import
+import type { Club } from '@prisma/client';
 
 interface Props { clubs: Club[] }
 
