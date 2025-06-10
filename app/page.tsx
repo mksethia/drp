@@ -1,16 +1,17 @@
 "use client";
 
-export const dynamicSetting = "force-dynamic";
-
+import dynamic from "next/dynamic";
 import prisma from "@/lib/prisma";
-import type { Club } from "@prisma/client";
+import type { Club, Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
-import dynamic from "next/dynamic";
-
 import Link from "next/link";
+import Image from "next/image";
 
-// Dynamically import the map component to disable SSR
+// Force dynamic rendering for data freshness
+export const dynamicSetting = "force-dynamic";
+
+// Dynamically import the map component for client-side only
 const ClubMap = dynamic(() => import("@/app/components/clubmap"), { ssr: false });
 
 export default async function Home({
@@ -18,27 +19,27 @@ export default async function Home({
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
-  // Ensure posts table is set up
+  // Ensure the posts table exists
   const tableExists = await checkPostTableExists();
   if (!tableExists) {
     redirect("/setup");
   }
 
-  // Extract & normalize sport & experience filters
-  const sp = searchParams;
-  let rawSport = sp.sport;
+  // Extract & normalize sport filter
+  let rawSport = searchParams.sport;
   if (Array.isArray(rawSport)) rawSport = rawSport[0];
-  const sportQuery = rawSport?.trim() || "";
+  const sportQuery = rawSport?.trim() ?? "";
 
-  let rawExperience = sp.experience;
+  // Extract & normalize experience filter
+  let rawExperience = searchParams.experience;
   if (Array.isArray(rawExperience)) rawExperience = rawExperience[0];
   const allowed = ["beginner", "intermediate", "advanced", "open to all"];
-  const experienceFilter = allowed.includes(rawExperience?.toLowerCase() || "")
+  const experienceFilter = allowed.includes(rawExperience?.toLowerCase() ?? "")
     ? rawExperience!.toLowerCase()
     : "";
 
-  // Build where clause
-  const where: Record<string, any> = {};
+  // Build a typed `where` clause for Prisma
+  const where: Prisma.ClubWhereInput = {};
   if (sportQuery) {
     where.sport = { contains: sportQuery, mode: "insensitive" };
   }
@@ -46,7 +47,7 @@ export default async function Home({
     where.level = { equals: experienceFilter, mode: "insensitive" };
   }
 
-  // Fetch clubs (no distance field in schema)
+  // Fetch up to 50 clubs matching filters
   const clubs: Club[] = await prisma.club.findMany({
     where,
     take: 50,
@@ -78,7 +79,6 @@ export default async function Home({
             defaultValue={sportQuery}
             className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-
           <select
             name="experience"
             defaultValue={experienceFilter}
@@ -90,7 +90,6 @@ export default async function Home({
             <option value="advanced">Advanced</option>
             <option value="open to all">Open to All</option>
           </select>
-
           <button
             type="submit"
             className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-r-lg hover:bg-indigo-700 transition"
@@ -108,17 +107,18 @@ export default async function Home({
         </div>
       )}
 
-      {/* Optional: keep a grid fallback */}
       {clubs.length > 0 && (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
           {clubs.map((club) => (
             <Link href={`/posts/${club.id}`} key={club.id}>
               <div className="border rounded-lg shadow-md bg-white p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
                 {club.imageUrl && (
-                  <img
+                  <Image
                     src={club.imageUrl}
                     alt={club.name}
-                    className="w-full h-40 object-cover rounded-md mb-4"
+                    width={400}
+                    height={160}
+                    className="object-cover rounded-md mb-4"
                   />
                 )}
                 <h2 className="text-2xl font-semibold text-gray-900 mb-2">
