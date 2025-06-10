@@ -1,6 +1,4 @@
-"use client";
-
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import prisma from "@/lib/prisma";
 import type { Club, Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -9,10 +7,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 // Force dynamic rendering for data freshness
-export const dynamicSetting = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 // Dynamically import the map component for client-side only
-const ClubMap = dynamic(() => import("@/app/components/clubmap"), { ssr: false });
+const ClubMap = dynamicImport(() => import("@/app/components/clubmap"), { ssr: false });
 
 export default async function Home({
   searchParams,
