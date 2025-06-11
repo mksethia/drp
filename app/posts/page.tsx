@@ -8,7 +8,6 @@ interface Post {
   id: number;
   name:  string
   sport: string
-  distance: number
   level: string
 }
 
