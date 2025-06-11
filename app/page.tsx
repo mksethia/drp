@@ -10,11 +10,12 @@ import ClubMap from "@/app/components/clubmap";
 // Force dynamic rendering for data freshness
 export const dynamic = "force-dynamic";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[] | undefined>;
-}) {
+export default async function Home(
+  props: {
+    searchParams: Promise<Record<string, string | string[] | undefined>>;
+  }
+) {
+  const searchParams = await props.searchParams;
   // Ensure the posts table exists
   const tableExists = await checkPostTableExists();
   if (!tableExists) {
