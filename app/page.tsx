@@ -1,3 +1,5 @@
+"use client";
+
 import dynamicImport from "next/dynamic";
 import prisma from "@/lib/prisma";
 import type { Club, Prisma } from "@prisma/client";
