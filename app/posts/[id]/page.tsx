@@ -61,12 +61,6 @@ export default async function Post({
 
         {/* Additional fields (distance, level, etc.) */}
         <p className="text-lg text-gray-600">
-          Distance:{" "}
-          <span className="font-medium text-gray-800">
-            {post.distance ?? "N/A"} km
-          </span>
-        </p>
-        <p className="text-lg text-gray-600">
           Level:{" "}
           <span className="font-medium text-gray-800">
             {post.level || "N/A"}
