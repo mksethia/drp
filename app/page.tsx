@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { checkPostTableExists } from "@/lib/db-utils";
 import Link from "next/link";
 import Image from "next/image";
-import ClubMap from "@/app/components/clubmap"; 
+import ClubMap from "@/app/components/clubmap";
 
 // Force dynamic rendering for data freshness
 export const dynamic = "force-dynamic";
@@ -16,6 +16,7 @@ export default async function Home(
   }
 ) {
   const searchParams = await props.searchParams;
+
   // Ensure the posts table exists
   const tableExists = await checkPostTableExists();
   if (!tableExists) {
@@ -110,13 +111,15 @@ export default async function Home(
             <Link href={`/posts/${club.id}`} key={club.id}>
               <div className="border rounded-lg shadow-md bg-white p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
                 {club.imageUrl && (
-                  <Image
-                    src={club.imageUrl}
-                    alt={club.name}
-                    width={400}
-                    height={160}
-                    className="object-cover rounded-md mb-4"
-                  />
+                  <div className="relative w-full h-40 mb-4">
+                    <Image
+                      src={club.imageUrl}
+                      alt={club.name}
+                      fill
+                      className="object-cover rounded-md"
+                      unoptimized
+                    />
+                  </div>
                 )}
                 <h2 className="text-2xl font-semibold text-gray-900 mb-2">
                   {club.name}
