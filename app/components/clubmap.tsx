@@ -1,16 +1,17 @@
 'use client';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
+import L from 'leaflet'; 
 import type { Club } from '@prisma/client';
 
 interface Props { clubs: Club[] }
 
 export default function ClubMap({ clubs }: Props) {
-  // center on first club or fallback to [0,0]
   const center: [number, number] = clubs.length
     ? [clubs[0].latitude, clubs[0].longitude]
     : [0, 0];
+
+  const defaultImageUrl = 'https://media.craiyon.com/2025-04-04/a88FQuWLSgK0scUlj2aYVw.webp';
 
   return (
     <MapContainer
@@ -24,12 +25,13 @@ export default function ClubMap({ clubs }: Props) {
       />
 
       {clubs.map((c) => {
+
         const clubIcon = new L.Icon({
-          iconUrl: c.imageUrl,       
-          iconSize: [32, 32],         
-          iconAnchor: [16, 16],  
-          popupAnchor: [0, -16],      
-          className: 'rounded-sm border' 
+          defaultImageUrl,
+          iconSize: [32, 32],    // size of the icon
+          iconAnchor: [16, 16],  // where the icon should be anchored
+          popupAnchor: [0, -16], // where the popup should appear
+          className: 'rounded-sm border', // optional styling
         });
 
         return (
@@ -48,3 +50,4 @@ export default function ClubMap({ clubs }: Props) {
     </MapContainer>
   );
 }
+
