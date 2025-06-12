@@ -11,7 +11,7 @@ async function main() {
       level: 'Experienced',
       longitude: 12.4924,
       latitude: 41.8902,
-      imageUrl: 'public/images/red-tiger.png'
+      imageUrl: 'https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/6935/production/_123233962_gettyimages-1235538326.jpg'
     },
     {
       name: 'Blue Dolphins Football Club',
