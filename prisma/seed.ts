@@ -11,7 +11,7 @@ async function main() {
       level: 'Experienced',
       longitude: 12.4924,
       latitude: 41.8902,
-      imageUrl: '/images/red-tiger.png'
+      imageUrl: 'public/images/red-tiger.png'
     },
     {
       name: 'Blue Dolphins Football Club',
@@ -19,7 +19,7 @@ async function main() {
       level: 'Intermediate',
       longitude: 12.4964,
       latitude: 41.9028,
-      imageUrl: '/images/red-tiger.png'
+      imageUrl: 'public/images/red-tiger.png'
     },
     {
       name: 'Golden Eagles Football Club',
@@ -27,7 +27,7 @@ async function main() {
       level: 'Open to All',
       longitude: 12.4964,
       latitude: 41.9028,
-      imageUrl: '/images/red-tiger.png'
+      imageUrl: 'public/images/red-tiger.png'
     },
     {
       name: 'Green Hornets Rugby Club',
@@ -35,7 +35,7 @@ async function main() {
       level: 'Beginner',
       longitude: 12.4964,
       latitude: 41.9028,
-      imageUrl: '/images/red-tiger.png'
+      imageUrl: 'public/images/red-tiger.png'
     },
   ];
 
