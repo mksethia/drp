@@ -1,6 +1,7 @@
 'use client';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import type { Club } from '@prisma/client';
 
 interface Props { clubs: Club[] }
@@ -21,14 +22,29 @@ export default function ClubMap({ clubs }: Props) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
       />
-      {clubs.map((c) => (
-        <Marker key={c.id} position={[c.latitude, c.longitude]}>
-          <Popup>
-            <strong>{c.name}</strong><br />
-            {c.sport} — {c.level}
-          </Popup>
-        </Marker>
-      ))}
+
+      {clubs.map((c) => {
+        const clubIcon = new L.Icon({
+          iconUrl: c.imageUrl,       
+          iconSize: [32, 32],         
+          iconAnchor: [16, 16],  
+          popupAnchor: [0, -16],      
+          className: 'rounded-sm border' 
+        });
+
+        return (
+          <Marker
+            key={c.id}
+            position={[c.latitude, c.longitude]}
+            icon={clubIcon}
+          >
+            <Popup>
+              <strong>{c.name}</strong><br />
+              {c.sport} — {c.level}
+            </Popup>
+          </Marker>
+        );
+      })}
     </MapContainer>
   );
 }
