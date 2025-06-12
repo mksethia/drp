@@ -19,7 +19,7 @@ async function main() {
       level: 'Intermediate',
       longitude: -0.3421,
       latitude: 51.5805,
-      imageUrl: 'public/images/red-tiger.png'
+      imageUrl: 'https://www.afcoakley.co.uk/wp-content/uploads/2023/02/Oakley_Team_3-scaled_1080x600_acf_cropped.jpg'
     },
     {
       name: 'Golden Eagles Football Club',
@@ -27,7 +27,7 @@ async function main() {
       level: 'Open to All',
       longitude: 0.0098,
       latitude: 51.4934,
-      imageUrl: 'public/images/red-tiger.png'
+      imageUrl: 'https://www.alexandraparkfc.co.uk/wp-content/uploads/2022/11/2022_10_30_AP_JPEG-8-bit-300ppi-sRGB-For-Web_00021-1024x683.jpg'
     },
     {
       name: 'Green Hornets Rugby Club',
@@ -35,7 +35,7 @@ async function main() {
       level: 'Beginner',
       longitude: -0.0073,
       latitude: 51.4612,
-      imageUrl: 'public/images/red-tiger.png'
+      imageUrl: 'https://www.ayrrugbyclub.co.uk/wp-content/uploads/2021/09/report1-scaled.jpg'
     },
   ];
 
