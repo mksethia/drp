@@ -2,19 +2,17 @@
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import type { Club } from '@prisma/client';
-import "leaflet/dist/leaflet.css";
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
-import L from "leaflet";
-
-// Delete the built-in getter so we can replace it
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+// @ts-expect-error: Leaflet types are not fully compatible with TypeScript
+delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
-  iconUrl:      "/images/marker-icon.png",
-  iconRetinaUrl:"/images/marker-icon-2x.png",
-  shadowUrl:    "/images/marker-shadow.png",
+  iconRetinaUrl: '/images/marker-icon-2x.png',
+  iconUrl:       '/images/marker-icon.png',
+  shadowUrl:     '/images/marker-shadow.png',
 });
-
 
 interface Props { clubs: Club[] }
 
