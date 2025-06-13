@@ -102,7 +102,7 @@ export default async function Home(
           </select>
 
           <select
-            name="Social Level"
+            name="social"
             defaultValue={socialFilter}
             className="px-4 py-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
