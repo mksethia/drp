@@ -19,6 +19,8 @@ export async function createPost(formData: FormData) {
       latitude: Number(formData.get("latitude")),
       longitude: Number(formData.get("longitude")),
       imageUrl: formData.get("imageUrl") as string | null || null,
+      social: formData.get("social") as string,
+      cost: Number(formData.get("cost")),
     },
   });
 
