@@ -73,6 +73,22 @@ export default async function Post({
             {post.social || "N/A"}
           </span>
         </p>
+
+        <p className="text-lg text-gray-600">
+          Cost:{" "}
+          <span className="font-medium text-gray-800">
+            {post.cost ? `£${post.cost}` : "N/A"}
+          </span>
+        </p>
+
+        {/* Elite badge */}
+        {post.isElite && (
+          <div className="mt-4 inline-flex items-center bg-yellow-100 text-yellow-800 text-sm font-semibold px-2.5 py-0.5 rounded">
+            <Star className="w-4 h-4 mr-1 fill-current" />
+            Elite Club
+          </div>
+        )}
+
       </article>
 
       {/* Delete Button */}

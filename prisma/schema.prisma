@@ -36,4 +36,5 @@ model Club {
   longitude Float
   social String
   cost   Float
+  isElite  Boolean @default(false)
 }
