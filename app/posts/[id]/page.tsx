@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 
 //import Image from "next/image";
 import { Star } from "lucide-react";
+import Slideshow from "@/app/components/slideshow";
 
 export const dynamic = "force-dynamic";
 
@@ -51,15 +52,9 @@ export default async function Post({
           </span>
         </p>
 
-        {/* Club Image */}
-        {post.imageUrl && (
-          <div className="mb-6">
-            <img
-              src={post.facilitiesImage!}
-              alt={post.name}
-              className="w-full h-64 object-cover rounded-md"
-            />
-          </div>
+        {/* Club Images Slideshow */}
+        {post.images && post.images.length > 0 && (
+          <Slideshow images={post.images} />
         )}
 
         {/* Additional fields (distance, level, etc.) */}
