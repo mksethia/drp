@@ -69,6 +69,7 @@ export default async function Home(
       longitude: true,
       social: true,
       cost: true,
+      isElite: true,
     },
   });
 
