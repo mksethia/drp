@@ -100,15 +100,18 @@ export default async function Home(
             <option value="advanced">Advanced</option>
             <option value="open to all">Open to All</option>
           </select>
+
           <select
             name="Social Level"
             defaultValue={socialFilter}
             className="px-4 py-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">Very Social</option>
-            <option value="beginner">Social</option>
-            <option value="intermediate">Training Only</option>
+            <option value="">All Social Levels</option>
+            <option value="Very Social">Very Social</option>
+            <option value="Social">Social</option>
+            <option value="Training Only">Training Only</option>
           </select>
+
           <button
             type="submit"
             className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-r-lg hover:bg-indigo-700 transition"
