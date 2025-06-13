@@ -55,7 +55,7 @@ export default async function Post({
         {post.imageUrl && (
           <div className="mb-6">
             <img
-              src={post.imageUrl}
+              src={post.facilitiesImage}
               alt={post.name}
               className="w-full h-64 object-cover rounded-md"
             />

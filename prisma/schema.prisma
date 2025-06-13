@@ -32,6 +32,7 @@ model Club {
   sport String
   level String
   imageUrl String?
+  facilitiesImage String?
   latitude Float
   longitude Float
   social String

@@ -65,6 +65,7 @@ export default async function Home(
       sport: true,
       level: true,
       imageUrl: true,
+      facilitiesImage: true,
       latitude: true,
       longitude: true,
       social: true,
