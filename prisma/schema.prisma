@@ -34,4 +34,6 @@ model Club {
   imageUrl String?
   latitude Float
   longitude Float
+  social String
+  cost   Float
 }

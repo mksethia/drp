@@ -36,6 +36,13 @@ export default async function Home(
     ? rawExperience!.toLowerCase()
     : "";
 
+  let rawSocial = searchParams.social;
+  if (Array.isArray(rawSocial)) rawSocial = rawSocial[0];
+  const socialallowed = ["Very Social", "Social", "Training Only"];
+  const socialFilter = socialallowed.includes(rawSocial?.toLowerCase() ?? "")
+    ? rawSocial!.toLowerCase()
+    : "";
+
   // Build a typed `where` clause for Prisma
   const where: Prisma.ClubWhereInput = {};
   if (sportQuery) {
@@ -43,6 +50,9 @@ export default async function Home(
   }
   if (experienceFilter) {
     where.level = { equals: experienceFilter, mode: "insensitive" };
+  }
+  if (socialFilter) {
+    where.social = { equals: socialFilter, mode: "insensitive" };
   }
 
   // Fetch up to 50 clubs matching filters
@@ -57,6 +67,8 @@ export default async function Home(
       imageUrl: true,
       latitude: true,
       longitude: true,
+      social: true,
+      cost: true,
     },
   });
 
@@ -87,6 +99,15 @@ export default async function Home(
             <option value="intermediate">Intermediate</option>
             <option value="advanced">Advanced</option>
             <option value="open to all">Open to All</option>
+          </select>
+          <select
+            name="Social Level"
+            defaultValue={socialFilter}
+            className="px-4 py-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Very Social</option>
+            <option value="beginner">Social</option>
+            <option value="intermediate">Training Only</option>
           </select>
           <button
             type="submit"
@@ -129,6 +150,9 @@ export default async function Home(
                 </p>
                 <p className="text-sm text-gray-500">
                   Level: <span className="font-medium capitalize">{club.level}</span>
+                </p>
+                <p className="text-sm text-gray-500">
+                  Social Level: <span className="font-medium capitalize">{club.social}</span>
                 </p>
               </div>
             </Link>

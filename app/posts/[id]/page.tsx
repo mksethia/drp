@@ -66,6 +66,13 @@ export default async function Post({
             {post.level || "N/A"}
           </span>
         </p>
+
+        <p className="text-lg text-gray-600">
+          Social Level:{" "}
+          <span className="font-medium text-gray-800">
+            {post.social || "N/A"}
+          </span>
+        </p>
       </article>
 
       {/* Delete Button */}

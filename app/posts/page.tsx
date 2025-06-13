@@ -9,6 +9,7 @@ interface Post {
   name:  string
   sport: string
   level: string
+  social: string
 }
 
 // Disable static generation
