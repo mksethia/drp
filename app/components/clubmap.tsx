@@ -2,6 +2,19 @@
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import type { Club } from '@prisma/client';
+import "leaflet/dist/leaflet.css";
+
+import L from "leaflet";
+
+// Delete the built-in getter so we can replace it
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconUrl:      "/images/marker-icon.png",
+  iconRetinaUrl:"/images/marker-icon-2x.png",
+  shadowUrl:    "/images/marker-shadow.png",
+});
+
 
 interface Props { clubs: Club[] }
 
