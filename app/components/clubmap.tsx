@@ -42,7 +42,7 @@ export default function ClubMap({ clubs }: Props) {
           eventHandlers={{
             mouseover: (e) => e.target.openPopup(),
             mouseout: (e) => e.target.closePopup(),
-            mousedown: () => router.push(`/clubs/${c.id}`) // Navigate to club details on click
+            mousedown: () => router.push(`/posts/${c.id}`) // Navigate to club details on click
           }}
         >
           <Popup>

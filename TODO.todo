@@ -1,11 +1,14 @@
 DONE: remove CLUBS from top right of the website (and disable sign in for now)
 DONE: Remove map in the beginning: should appear after a search
+DONE: Should be able to hover over pins to see the club name and info
 
-Should be able to hover over pins to see the club name and info
 Differentiate map view and list view? 
-Title should not be clubs: should be like a slogan or something
+
+DONE: Title should not be clubs: should be like a slogan or something
+
 Flesh out three football clubs:
  -> opening hours, training times, costs, descriptions, images, facitilities ...
+ 
 better ui: fonts, colours, animations, 
 icons are different for different sports
 on landing page seach bar should be behind an image / blurred image ? 

@@ -85,7 +85,7 @@ export default async function Home(
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-24 px-8">
-      <h1 className="text-5xl font-extrabold mb-6 text-[#333333]">Clubs</h1>
+      <h1 className="text-5xl font-extrabold mb-6 text-[#333333]">The most powerful way to discover sports clubs</h1>
 
       <form method="GET" className="w-full max-w-md mb-12">
         <label htmlFor="sportSearch" className="sr-only">
