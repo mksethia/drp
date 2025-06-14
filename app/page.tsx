@@ -11,7 +11,6 @@ import FilterPanel from "@/app/components/filterpanel";
 // Force dynamic rendering for data freshness
 export const dynamic = "force-dynamic";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Home(
   props: {
     searchParams: Promise<Record<string, string | string[] | undefined>>;
