@@ -78,7 +78,7 @@ export default async function Home(
       </h1>
 
       {/* First‐visit: just the search bar */}
-      <div className="w-full max-w-md mb-12">
+      {!hasSearch && (<div className="w-full max-w-md mb-12">
         <FilterPanel
           sportQuery={sportQuery}
           experienceFilter={experienceFilter}
@@ -86,6 +86,7 @@ export default async function Home(
           showFilters={false}
         />
       </div>
+      )}
 
       {/* After first search: two‐column layout + results */}
       {hasSearch && (
