@@ -16,6 +16,7 @@ export default function FilterPanel({ sportQuery, experienceFilter, socialFilter
   const [social, setSocial] = useState(socialFilter);
 
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const searchParams = useSearchParams();
 
   function applyFilters() {
