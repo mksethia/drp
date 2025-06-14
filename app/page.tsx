@@ -77,43 +77,79 @@ export default async function Home(
         The most powerful way to discover sports clubs
       </h1>
 
-      {/* Search + Filter Container (Server-side) */}
+      {/* First‐visit: just the search bar */}
       <div className="w-full max-w-md mb-12">
         <FilterPanel
           sportQuery={sportQuery}
           experienceFilter={experienceFilter}
           socialFilter={socialFilter}
+          showFilters={false}
         />
       </div>
 
-      {/* Only show results/map after initial search */}
+      {/* After first search: two‐column layout + results */}
       {hasSearch && (
-        clubs.length === 0 ? (
-          <p className="text-red-500 mb-8">No clubs found with those filters.</p>
-        ) : (
-          <>
-            <div className="w-full max-w-6xl mb-12">
+        <>
+          <div className="flex w-full max-w-6xl mb-12">
+            {/* left: full filters */}
+            <div className="w-1/3 pr-6">
+              <FilterPanel
+                sportQuery={sportQuery}
+                experienceFilter={experienceFilter}
+                socialFilter={socialFilter}
+                showFilters={true}
+              />
+            </div>
+            {/* right: map */}
+            <div className="w-2/3">
               <ClubMap clubs={clubs} />
             </div>
+          </div>
+
+          {clubs.length === 0 ? (
+            <p className="text-red-500 mb-8">
+              No clubs found with those filters.
+            </p>
+          ) : (
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
               {clubs.map((club) => (
                 <Link href={`/posts/${club.id}`} key={club.id}>
                   <div className="border rounded-lg shadow-md bg-white p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
                     {club.imageUrl && (
                       <div className="relative w-full h-40 mb-4">
-                        <Image src={club.imageUrl} alt={club.name} fill className="object-cover rounded-md" unoptimized />
+                        <Image
+                          src={club.imageUrl}
+                          alt={club.name}
+                          fill
+                          className="object-cover rounded-md"
+                          unoptimized
+                        />
                       </div>
                     )}
-                    <h2 className="text-2xl font-semibold text-gray-900 mb-2">{club.name}</h2>
-                    <p className="text-sm text-gray-500">Sport: <span className="font-medium">{club.sport}</span></p>
-                    <p className="text-sm text-gray-500">Level: <span className="font-medium capitalize">{club.level}</span></p>
-                    <p className="text-sm text-gray-500">Social Level: <span className="font-medium capitalize">{club.social}</span></p>
+                    <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                      {club.name}
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                      Sport: <span className="font-medium">{club.sport}</span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Level:{" "}
+                      <span className="font-medium capitalize">
+                        {club.level}
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Social Level:{" "}
+                      <span className="font-medium capitalize">
+                        {club.social}
+                      </span>
+                    </p>
                   </div>
                 </Link>
               ))}
             </div>
-          </>
-        )
+          )}
+        </>
       )}
     </div>
   );
