@@ -32,16 +32,24 @@ export default async function Home(
   let rawExperience = searchParams.experience;
   if (Array.isArray(rawExperience)) rawExperience = rawExperience[0];
   const allowed = ["beginner", "intermediate", "advanced", "open to all"];
-  const experienceFilter = allowed.includes(rawExperience?.toLowerCase() ?? "")
-    ? rawExperience!.toLowerCase()
-    : "";
+  const experienceFilter =
+    allowed.includes(rawExperience?.toLowerCase() ?? "")
+      ? rawExperience!.toLowerCase()
+      : "";
 
+  // Extract & normalize social filter
   let rawSocial = searchParams.social;
   if (Array.isArray(rawSocial)) rawSocial = rawSocial[0];
-  const socialallowed = ["Very Social", "Social", "Training Only"];
-  const socialFilter = socialallowed.includes(rawSocial?.toLowerCase() ?? "")
-    ? rawSocial!.toLowerCase()
-    : "";
+  const socialAllowed = ["Very Social", "Social", "Training Only"];
+  const socialFilter =
+    socialAllowed.includes(rawSocial?.toLowerCase() ?? "")
+      ? rawSocial!.toLowerCase()
+      : "";
+
+  // Determine if user has performed a search
+  const hasSearch = Boolean(
+    sportQuery || experienceFilter || socialFilter
+  );
 
   // Build a typed `where` clause for Prisma
   const where: Prisma.ClubWhereInput = {};
@@ -124,49 +132,49 @@ export default async function Home(
         </div>
       </form>
 
-      {clubs.length === 0 ? (
-        <p className="text-red-500 mb-8">No clubs found with those filters.</p>
-      ) : (
-        <div className="w-full max-w-6xl mb-12">
-          <ClubMap clubs={clubs} />
-        </div>
-      )}
-
-      {clubs.length > 0 && (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
-          {clubs.map((club) => (
-            <Link href={`/posts/${club.id}`} key={club.id}>
-              <div className="border rounded-lg shadow-md bg-white p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-                {club.imageUrl && (
-                  <div className="relative w-full h-40 mb-4">
-                    <Image
-                      src={club.imageUrl}
-                      alt={club.name}
-                      fill
-                      className="object-cover rounded-md"
-                      unoptimized
-                    />
+      {/* Only show results/map after an initial search */}
+      {hasSearch && (
+        clubs.length === 0 ? (
+          <p className="text-red-500 mb-8">No clubs found with those filters.</p>
+        ) : (
+          <>
+            <div className="w-full max-w-6xl mb-12">
+              <ClubMap clubs={clubs} />
+            </div>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
+              {clubs.map((club) => (
+                <Link href={`/posts/${club.id}`} key={club.id}>
+                  <div className="border rounded-lg shadow-md bg-white p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
+                    {club.imageUrl && (
+                      <div className="relative w-full h-40 mb-4">
+                        <Image
+                          src={club.imageUrl}
+                          alt={club.name}
+                          fill
+                          className="object-cover rounded-md"
+                          unoptimized
+                        />
+                      </div>
+                    )}
+                    <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                      {club.name}
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                      Sport: <span className="font-medium">{club.sport}</span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Level: <span className="font-medium capitalize">{club.level}</span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Social Level: <span className="font-medium capitalize">{club.social}</span>
+                    </p>
                   </div>
-                )}
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-                  {club.name}
-                </h2>
-                <p className="text-sm text-gray-500">
-                  Sport: <span className="font-medium">{club.sport}</span>
-                </p>
-                <p className="text-sm text-gray-500">
-                  Level: <span className="font-medium capitalize">{club.level}</span>
-                </p>
-                <p className="text-sm text-gray-500">
-                  Social Level: <span className="font-medium capitalize">{club.social}</span>
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )
       )}
     </div>
   );
 }
-
-
