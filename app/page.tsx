@@ -72,7 +72,12 @@ export default async function Home(
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-24 px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-24 px-8"
+      style={{
+        backgroundImage: "url('/background.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
       <h1 className="text-5xl font-semibold mb-6 text-[#333333]">
         The most powerful way to discover sports clubs
       </h1>
