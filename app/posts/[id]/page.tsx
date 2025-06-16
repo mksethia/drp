@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 
 //import Image from "next/image";
-import { Star } from "lucide-react";
 import Slideshow from "@/app/components/slideshow";
 
 export const dynamic = "force-dynamic";
