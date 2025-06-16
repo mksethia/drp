@@ -42,7 +42,7 @@ export default function Header() {
               </div>
             </>
           ) : (
-            <Link href="/login" className="bg-white text-accent px-4 py-2 rounded-lg transition">
+            <Link href="/login" className="bg-accent text-white px-4 py-2 rounded-lg transition">
               Sign In
             </Link>
           )}
