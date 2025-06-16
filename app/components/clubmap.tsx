@@ -47,7 +47,7 @@ export default function ClubMap({ clubs }: Props) {
         >
           <Popup>
             <strong>{c.name}</strong><br />
-            {c.sport} — {c.level}
+            {c.sport} — {c.expLevel}
           </Popup>
         </Marker>
       ))}
