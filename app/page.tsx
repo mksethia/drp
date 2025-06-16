@@ -45,7 +45,7 @@ export default async function Home(
 
   const hasSearch = Boolean(sportQuery || experienceFilter || socialFilter);
 
-  // eslint-disable-next-line no-unused-vars
+  /* eslint-disable no-unused-vars */
   const containerClasses = [
     "min-h-screen",
     "flex flex-col justify-start items-center pt-16 pb-12 px-8",
