@@ -10,7 +10,9 @@ export default function NewPost() {
       <Form action={createPost} className="space-y-6">
         {/* Name */}
         <div>
-          <label htmlFor="title" className="block text-lg font-medium mb-2">Name</label>
+          <label htmlFor="title" className="block text-lg font-medium mb-2">
+            Name <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             id="title"
@@ -22,21 +24,27 @@ export default function NewPost() {
 
         {/* Sport */}
         <div>
-          <label htmlFor="sport" className="block text-lg font-medium mb-2">Sport</label>
+          <label htmlFor="sport" className="block text-lg font-medium mb-2">
+            Sport <span className="text-red-500">*</span>
+          </label>
           <textarea
             id="sport"
             name="sport"
             rows={2}
+            required
             className="w-full px-4 py-2 border rounded-lg"
           />
         </div>
 
         {/* Experience Level */}
         <div>
-          <label htmlFor="level" className="block text-lg font-medium mb-2">Experience Level</label>
+          <label htmlFor="level" className="block text-lg font-medium mb-2">
+            Experience Level <span className="text-red-500">*</span>
+          </label>
           <select
             id="level"
             name="level"
+            required
             className="w-full px-4 py-2 border rounded-lg"
           >
             <option value="beginner">Beginner</option>
@@ -47,35 +55,43 @@ export default function NewPost() {
 
         {/* Cover Image URL */}
         <div>
-          <label htmlFor="coverImg" className="block text-lg font-medium mb-2">Cover Image URL</label>
+          <label htmlFor="coverImg" className="block text-lg font-medium mb-2">
+            Cover Image URL <span className="text-red-500">*</span>
+          </label>
           <input
             type="url"
             id="coverImg"
             name="coverImg"
             placeholder="https://example.com/image.jpg"
+            required
             className="w-full px-4 py-2 border rounded-lg"
           />
         </div>
 
         {/* Other Images */}
         <div>
-          <label className="block text-lg font-medium mb-2">Additional Images URLs</label>
+          <label className="block text-lg font-medium mb-2">
+            Additional Images URLs <span className="text-red-500">*</span>
+          </label>
           <input
             type="url"
             name="images"
             placeholder="Image URL 1"
+            required
             className="w-full mb-2 px-4 py-2 border rounded-lg"
           />
           <input
             type="url"
             name="images"
             placeholder="Image URL 2"
+            required
             className="w-full mb-2 px-4 py-2 border rounded-lg"
           />
           <input
             type="url"
             name="images"
             placeholder="Image URL 3"
+            required
             className="w-full px-4 py-2 border rounded-lg"
           />
         </div>
@@ -83,7 +99,9 @@ export default function NewPost() {
         {/* Location */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="latitude" className="block text-lg font-medium mb-2">Latitude</label>
+            <label htmlFor="latitude" className="block text-lg font-medium mb-2">
+              Latitude <span className="text-red-500">*</span>
+            </label>
             <input
               type="number"
               step="0.000001"
@@ -94,7 +112,9 @@ export default function NewPost() {
             />
           </div>
           <div>
-            <label htmlFor="longitude" className="block text-lg font-medium mb-2">Longitude</label>
+            <label htmlFor="longitude" className="block text-lg font-medium mb-2">
+              Longitude <span className="text-red-500">*</span>
+            </label>
             <input
               type="number"
               step="0.000001"
@@ -108,7 +128,9 @@ export default function NewPost() {
 
         {/* Social */}
         <div>
-          <label htmlFor="social" className="block text-lg font-medium mb-2">Social</label>
+          <label htmlFor="social" className="block text-lg font-medium mb-2">
+            Social <span className="text-red-500">*</span>
+          </label>
           <select
             id="social"
             name="social"
@@ -122,18 +144,23 @@ export default function NewPost() {
 
         {/* Cost Per Month */}
         <div>
-          <label htmlFor="costPerMonth" className="block text-lg font-medium mb-2">Cost Per Month (£)</label>
+          <label htmlFor="costPerMonth" className="block text-lg font-medium mb-2">
+            Cost Per Month (£) <span className="text-red-500">*</span>
+          </label>
           <input
             type="number"
             id="costPerMonth"
             name="costPerMonth"
+            required
             className="w-full px-4 py-2 border rounded-lg"
           />
         </div>
 
         {/* Age Group */}
         <div>
-          <label htmlFor="ageGroup" className="block text-lg font-medium mb-2">Age Group</label>
+          <label htmlFor="ageGroup" className="block text-lg font-medium mb-2">
+            Age Group <span className="text-red-500">*</span>
+          </label>
           <select
             id="ageGroup"
             name="ageGroup"
@@ -148,22 +175,28 @@ export default function NewPost() {
 
         {/* Member Count */}
         <div>
-          <label htmlFor="memberCount" className="block text-lg font-medium mb-2">Member Count</label>
+          <label htmlFor="memberCount" className="block text-lg font-medium mb-2">
+            Member Count <span className="text-red-500">*</span>
+          </label>
           <input
             type="number"
             id="memberCount"
             name="memberCount"
+            required
             className="w-full px-4 py-2 border rounded-lg"
           />
         </div>
 
         {/* Training Frequency */}
         <div>
-          <label htmlFor="trainingFreq" className="block text-lg font-medium mb-2">Training Frequency (per week)</label>
+          <label htmlFor="trainingFreq" className="block text-lg font-medium mb-2">
+            Training Frequency (per week) <span className="text-red-500">*</span>
+          </label>
           <input
             type="number"
             id="trainingFreq"
             name="trainingFreq"
+            required
             className="w-full px-4 py-2 border rounded-lg"
           />
         </div>
@@ -196,11 +229,14 @@ export default function NewPost() {
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-lg font-medium mb-2">Description</label>
+          <label htmlFor="description" className="block text-lg font-medium mb-2">
+            Description <span className="text-red-500">*</span>
+          </label>
           <textarea
             id="description"
             name="description"
             rows={4}
+            required
             className="w-full px-4 py-2 border rounded-lg"
           />
         </div>

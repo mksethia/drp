@@ -60,5 +60,5 @@ export async function createPost(formData: FormData) {
   });
 
   // Redirect back to the posts list
-  redirect("/posts");
+  redirect("/");
 }
