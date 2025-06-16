@@ -3,6 +3,28 @@
 import Form from "next/form";
 import { createPost } from "./actions";
 
+function Label({
+  htmlFor,
+  children,
+  required = false,
+  className = "",
+}: {
+  htmlFor?: string;
+  children: React.ReactNode;
+  required?: boolean;
+  className?: string;
+}) {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className={`block text-lg font-medium mb-2 ${className}`}
+    >
+      {children}
+      {required && <span className="text-accent ml-1">*</span>}
+    </label>
+  );
+}
+
 export default function NewPost() {
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -10,9 +32,9 @@ export default function NewPost() {
       <Form action={createPost} className="space-y-6">
         {/* Name */}
         <div>
-          <label htmlFor="title" className="block text-lg font-medium mb-2">
-            Name <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="title" required>
+            Name
+          </Label>
           <input
             type="text"
             id="title"
@@ -24,9 +46,9 @@ export default function NewPost() {
 
         {/* Sport */}
         <div>
-          <label htmlFor="sport" className="block text-lg font-medium mb-2">
-            Sport <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="sport" required>
+            Sport
+          </Label>
           <textarea
             id="sport"
             name="sport"
@@ -38,9 +60,9 @@ export default function NewPost() {
 
         {/* Experience Level */}
         <div>
-          <label htmlFor="level" className="block text-lg font-medium mb-2">
-            Experience Level <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="level" required>
+            Experience Level
+          </Label>
           <select
             id="level"
             name="level"
@@ -55,9 +77,9 @@ export default function NewPost() {
 
         {/* Cover Image URL */}
         <div>
-          <label htmlFor="coverImg" className="block text-lg font-medium mb-2">
-            Cover Image URL <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="coverImg" required>
+            Cover Image URL
+          </Label>
           <input
             type="url"
             id="coverImg"
@@ -70,38 +92,27 @@ export default function NewPost() {
 
         {/* Other Images */}
         <div>
-          <label className="block text-lg font-medium mb-2">
-            Additional Images URLs <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="url"
-            name="images"
-            placeholder="Image URL 1"
-            required
-            className="w-full mb-2 px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="url"
-            name="images"
-            placeholder="Image URL 2"
-            required
-            className="w-full mb-2 px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="url"
-            name="images"
-            placeholder="Image URL 3"
-            required
-            className="w-full px-4 py-2 border rounded-lg"
-          />
+          <Label className="mb-4" required>
+            Additional Image URLs
+          </Label>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <input
+              key={i}
+              type="url"
+              name="images"
+              placeholder={`Image URL ${i + 1}`}
+              required
+              className="w-full mb-2 px-4 py-2 border rounded-lg"
+            />
+          ))}
         </div>
 
         {/* Location */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="latitude" className="block text-lg font-medium mb-2">
-              Latitude <span className="text-red-500">*</span>
-            </label>
+            <Label htmlFor="latitude" required>
+              Latitude
+            </Label>
             <input
               type="number"
               step="0.000001"
@@ -112,9 +123,9 @@ export default function NewPost() {
             />
           </div>
           <div>
-            <label htmlFor="longitude" className="block text-lg font-medium mb-2">
-              Longitude <span className="text-red-500">*</span>
-            </label>
+            <Label htmlFor="longitude" required>
+              Longitude
+            </Label>
             <input
               type="number"
               step="0.000001"
@@ -128,9 +139,9 @@ export default function NewPost() {
 
         {/* Social */}
         <div>
-          <label htmlFor="social" className="block text-lg font-medium mb-2">
-            Social <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="social" required>
+            Social
+          </Label>
           <select
             id="social"
             name="social"
@@ -144,9 +155,9 @@ export default function NewPost() {
 
         {/* Cost Per Month */}
         <div>
-          <label htmlFor="costPerMonth" className="block text-lg font-medium mb-2">
-            Cost Per Month (£) <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="costPerMonth" required>
+            Cost Per Month (£)
+          </Label>
           <input
             type="number"
             id="costPerMonth"
@@ -158,9 +169,9 @@ export default function NewPost() {
 
         {/* Age Group */}
         <div>
-          <label htmlFor="ageGroup" className="block text-lg font-medium mb-2">
-            Age Group <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="ageGroup" required>
+            Age Group
+          </Label>
           <select
             id="ageGroup"
             name="ageGroup"
@@ -175,9 +186,9 @@ export default function NewPost() {
 
         {/* Member Count */}
         <div>
-          <label htmlFor="memberCount" className="block text-lg font-medium mb-2">
-            Member Count <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="memberCount" required>
+            Member Count
+          </Label>
           <input
             type="number"
             id="memberCount"
@@ -189,9 +200,9 @@ export default function NewPost() {
 
         {/* Training Frequency */}
         <div>
-          <label htmlFor="trainingFreq" className="block text-lg font-medium mb-2">
-            Training Frequency (per week) <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="trainingFreq" required>
+            Training Frequency (per week)
+          </Label>
           <input
             type="number"
             id="trainingFreq"
@@ -201,37 +212,30 @@ export default function NewPost() {
           />
         </div>
 
-        {/* Amenities */}
+        {/* Amenities (optional) */}
         <fieldset className="space-y-2">
           <legend className="text-lg font-medium">Amenities</legend>
-          <label className="inline-flex items-center">
-            <input type="checkbox" name="hasGym" className="mr-2" /> Gym
-          </label>
-          <label className="inline-flex items-center">
-            <input type="checkbox" name="hasPool" className="mr-2" /> Pool
-          </label>
-          <label className="inline-flex items-center">
-            <input type="checkbox" name="hasParking" className="mr-2" /> Parking
-          </label>
-          <label className="inline-flex items-center">
-            <input type="checkbox" name="hasShowers" className="mr-2" /> Showers
-          </label>
-          <label className="inline-flex items-center">
-            <input type="checkbox" name="hasCafe" className="mr-2" /> Cafe
-          </label>
-          <label className="inline-flex items-center">
-            <input type="checkbox" name="hasLifts" className="mr-2" /> Lifts
-          </label>
-          <label className="inline-flex items-center">
-            <input type="checkbox" name="hasDisabledAccess" className="mr-2" /> Disabled Access
-          </label>
+          {[
+            ["hasGym", "Gym"],
+            ["hasPool", "Pool"],
+            ["hasParking", "Parking"],
+            ["hasShowers", "Showers"],
+            ["hasCafe", "Cafe"],
+            ["hasLifts", "Lifts"],
+            ["hasDisabledAccess", "Disabled Access"],
+          ].map(([name, label]) => (
+            <label key={name} className="inline-flex items-center">
+              <input type="checkbox" name={name} className="mr-2" />
+              {label}
+            </label>
+          ))}
         </fieldset>
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-lg font-medium mb-2">
-            Description <span className="text-red-500">*</span>
-          </label>
+          <Label htmlFor="description" required>
+            Description
+          </Label>
           <textarea
             id="description"
             name="description"
@@ -241,7 +245,10 @@ export default function NewPost() {
           />
         </div>
 
-        <button type="submit" className="w-full bg-[rgba(34,69,44,0.9)] text-white py-3 rounded-lg hover:bg-accent-600">
+        <button
+          type="submit"
+          className="w-full bg-[rgba(34,69,44,0.9)] text-white py-3 rounded-lg hover:bg-accent-600"
+        >
           Add Club
         </button>
       </Form>
