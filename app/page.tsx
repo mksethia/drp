@@ -78,7 +78,7 @@ export default async function Home(
   });
 
   return (
-    <div className="{containerClasses}">
+    <div className={containerClasses}>
       {/* Translucent green box around title + first-visit search */}
       {!hasSearch && (
         <div className="w-full max-w-[40rem] bg-[#22452c] bg-opacity-5 rounded-2xl p-8 shadow-lg">
