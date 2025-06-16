@@ -82,7 +82,7 @@ export default async function Home(
     >
       {/* Translucent green box around title + first-visit search */}
       {!hasSearch && (
-        <div className="w-56 max-w-full bg-[#22452c] bg-opacity-5 rounded-2xl p-8 shadow-lg">
+        <div className="w-64 max-w-full bg-[#22452c] bg-opacity-5 rounded-2xl p-8 shadow-lg">
           <h1 className="text-5xl font-semibold mb-6 text-[#ffffff]">
             The most powerful way to discover sports clubs
           </h1>

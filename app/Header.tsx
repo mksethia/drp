@@ -17,7 +17,7 @@ export default function Header() {
             <>
               <Link 
                 href="/posts/new" 
-                className="bg-[rgba(34, 69, 44, 0.9)] text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                className="bg-[rgba(34, 69, 44, 0.9)] text-white px-4 py-2 rounded-lg hover:bg-accent-600 transition"
               >
                 ADD CLUB
               </Link>
@@ -35,7 +35,7 @@ export default function Header() {
               </div>
             </>
           ) : (
-            <Link href="/login" className="bg-[rgba(34, 69, 44, 0.9)] text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+            <Link href="/login" className="bg-[rgba(34, 69, 44, 0.9)] text-white px-4 py-2 rounded-lg hover:bg-accent-600 transition">
               Sign In
             </Link>
           )}

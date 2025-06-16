@@ -9,12 +9,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#22452c",
+        accent: "#325e19",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
       accentColor: {
-        primary: "#22452c",
+        primary: "#325e19",
       }
     },
   },

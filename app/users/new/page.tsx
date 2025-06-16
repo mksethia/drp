@@ -48,7 +48,7 @@ export default function NewUser() {
             className="w-full px-4 py-2 border rounded-lg"
           />
         </div>
-        <button type="submit" className="w-full bg-[rgba(34, 69, 44, 0.9)] text-white py-3 rounded-lg hover:bg-blue-600">
+        <button type="submit" className="w-full bg-[rgba(34, 69, 44, 0.9)] text-white py-3 rounded-lg hover:bg-accent-600">
           Create User
         </button>
       </Form>
