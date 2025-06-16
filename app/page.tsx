@@ -45,6 +45,12 @@ export default async function Home(
 
   const hasSearch = Boolean(sportQuery || experienceFilter || socialFilter);
 
+  const containerClasses = [
+    "min-h-screen",
+    "flex flex-col justify-start items-center pt-16 pb-12 px-8",
+    hasSearch ? "bg-gray-50" : "bg-[url('/images/background.jpg')] bg-cover bg-center"
+  ].join(" ");
+
   // Build Prisma where clause
   const where: Prisma.ClubWhereInput = {};
   if (sportQuery) where.sport = { contains: sportQuery, mode: "insensitive" };
@@ -81,12 +87,11 @@ export default async function Home(
 
   return (
     <div
-      className="min-h-screen bg-gray-50 flex flex-col justify-start items-center pt-16 pb-12 px-8"
-      style={backgroundStyle}
+      className="containerClasses"
     >
       {/* Translucent green box around title + first-visit search */}
       {!hasSearch && (
-        <div className="w-full max-w-md bg-[#22452c] bg-opacity-5 rounded-2xl p-8 shadow-lg">
+        <div className="w-full max-w-[40rem] bg-[#22452c] bg-opacity-5 rounded-2xl p-8 shadow-lg">
           <h1 className="text-5xl font-semibold mb-6 text-[#ffffff]">
             The most powerful way to discover sports clubs
           </h1>

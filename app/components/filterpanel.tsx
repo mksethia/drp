@@ -28,7 +28,7 @@ export default function FilterPanel({
         />
         <button
           type="submit"
-          className="absolute top-1/2 right-2 -translate-y-1/2 inline-flex items-center justify-center rounded-full bg-accent hover:bg-accent px-4 py-2 text-white shadow-lg transform focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="absolute top-1/2 right-2 -translate-y-1/2 inline-flex items-center justify-center rounded-full bg-accent hover:bg-accent px-4 py-1 text-white shadow-lg transform focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
           Search
         </button>

@@ -18,9 +18,6 @@ export default function RootLayout({
     <html lang="en">
       <body
         className="
-          bg-[url('/images/background.jpg')]
-          bg-cover
-          bg-center
           min-h-screen
           flex
           flex-col

@@ -7,7 +7,7 @@ export default function Header() {
   const { data: session } = useSession();
 
   return (
-    <header className="w-full bg-transparent shadow-md py-4 px-8">
+    <header className="sticky top-0 z-50 w-full bg-transparent shadow-md py-4 px-8">
       <nav className="flex justify-between items-center">
         <Link href="/" className="text-white text-xl text-[#ffffff] font-bold text-gray-800 hover:text-[#ffffff] transition-colors">
           NEXTPLAY
