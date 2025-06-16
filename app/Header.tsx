@@ -7,9 +7,9 @@ export default function Header() {
   const { data: session } = useSession();
 
   return (
-    <header className="w-full bg-transparent backdrop-blur-md shadow-md py-4 px-8">
+    <header className="w-full bg-transparent shadow-md py-4 px-8">
       <nav className="flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
+        <Link href="/" className="text-xl font-bold text-gray-800 hover:text-[#ffffff] transition-colors">
           NEXTPLAY
         </Link>
         <div className="flex items-center space-x-4">
@@ -17,7 +17,7 @@ export default function Header() {
             <>
               <Link 
                 href="/posts/new" 
-                className="bg-[rgba(34, 69, 44, 0.9)] text-white px-4 py-2 rounded-lg hover:bg-accent-600 transition"
+                className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-600 transition"
               >
                 ADD CLUB
               </Link>
@@ -35,7 +35,7 @@ export default function Header() {
               </div>
             </>
           ) : (
-            <Link href="/login" className="bg-[rgba(34, 69, 44, 0.9)] text-white px-4 py-2 rounded-lg hover:bg-accent-600 transition">
+            <Link href="/login" className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-600 transition">
               Sign In
             </Link>
           )}
