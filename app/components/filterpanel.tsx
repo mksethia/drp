@@ -191,8 +191,7 @@ export default function FilterPanel({
               <option value="">Any</option>
               <option value="All Ages">All Ages</option>
               <option value="Under 18s">Under 18s</option>
-              <option value="Adults">Adults</option>
-              <option value="Seniors">Seniors</option>
+              <option value="18+">18+</option>
             </select>
           </div>
 
