@@ -8,8 +8,6 @@ import Image from "next/image";
 import ClubMap from "@/app/components/clubmap";
 import FilterPanel from "@/app/components/filterpanel";
 
-import bg from '@/public/background.jpg'
-
 // Force dynamic rendering for data freshness
 export const dynamic = "force-dynamic";
 
