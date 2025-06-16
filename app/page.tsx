@@ -48,7 +48,7 @@ export default async function Home(
   // Age group
   let rawAgeGroup = searchParams.ageGroup;
   if (Array.isArray(rawAgeGroup)) rawAgeGroup = rawAgeGroup[0];
-  const ageGroups = ["All Ages", "Under 18s", "Adults", "Seniors"];
+  const ageGroups = ["All Ages", "18+", "Under 18s"];
   const ageGroupFilter =
     ageGroups.includes(rawAgeGroup ?? "") ? rawAgeGroup! : "";
 
