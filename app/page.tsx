@@ -45,6 +45,7 @@ export default async function Home(
 
   const hasSearch = Boolean(sportQuery || experienceFilter || socialFilter);
 
+  // eslint-disable-next-line no-unused-vars
   const containerClasses = [
     "min-h-screen",
     "flex flex-col justify-start items-center pt-16 pb-12 px-8",
@@ -78,7 +79,6 @@ export default async function Home(
   });
 
   return (
-    // eslint-disable-next-line no-unused-vars
     <div className="containerClasses">
       {/* Translucent green box around title + first-visit search */}
       {!hasSearch && (
