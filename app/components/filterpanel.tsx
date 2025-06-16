@@ -28,7 +28,7 @@ export default function FilterPanel({
         />
         <button
           type="submit"
-          className="absolute top-1/2 right-2 -translate-y-1/2 inline-flex items-center justify-center rounded-full bg-accent-600 hover:bg-accent-700 px-4 py-2 text-white shadow-lg transform focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="absolute top-1/2 right-2 -translate-y-1/2 inline-flex items-center justify-center rounded-full bg-accent hover:bg-accent px-4 py-2 text-white shadow-lg transform focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
           Search
         </button>
@@ -36,10 +36,10 @@ export default function FilterPanel({
 
       {/* only render the extra filters if showFilters is true */}
       {showFilters && (
-        <div className="rounded-lg bg-white p-4 shadow-md space-y-4">
+        <div className="rounded-lg bg-accent p-4 shadow-md space-y-4">
           {/* experience level */}
           <div>
-            <label htmlFor="experience" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="experience" className="block text-white text-sm font-medium text-gray-700">
               Experience level
             </label>
             <select
@@ -58,7 +58,7 @@ export default function FilterPanel({
 
           {/* social level */}
           <div>
-            <label htmlFor="social" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="social" className="block text-white text-sm font-medium text-gray-700">
               Social level
             </label>
             <select
