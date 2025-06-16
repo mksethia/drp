@@ -8,6 +8,8 @@ import Image from "next/image";
 import ClubMap from "@/app/components/clubmap";
 import FilterPanel from "@/app/components/filterpanel";
 
+import bg from '@/public/background.jpg'
+
 // Force dynamic rendering for data freshness
 export const dynamic = "force-dynamic";
 
@@ -74,7 +76,7 @@ export default async function Home(
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-24 px-8"
       style={{
-        backgroundImage: "url('/background.jpg')",
+        backgroundImage: "url(${bg.src})",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}>
