@@ -15,12 +15,11 @@ export async function createPost(formData: FormData) {
     data: {
       name: formData.get("title") as string,
       sport: formData.get("content") as string,
-      level: formData.get("level") as string,
+      expLevel: formData.get("level") as string,
       latitude: Number(formData.get("latitude")),
       longitude: Number(formData.get("longitude")),
-      imageUrl: formData.get("imageUrl") as string | null || null,
       social: formData.get("social") as string,
-      cost: Number(formData.get("cost")),
+      costPerMonth: Number(formData.get("cost")),
     },
   });
 
