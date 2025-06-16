@@ -72,7 +72,7 @@ export default async function Home(
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-24 px-8"
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center py-24 px-8"
       style={{
         backgroundImage: "url('/images/background.jpg')",
         backgroundSize: "cover",
@@ -83,7 +83,7 @@ export default async function Home(
       </h1>
 
       {/* First‐visit: just the search bar */}
-      {!hasSearch && (<div className="w-full max-w-md mb-12">
+      {!hasSearch && (<div className="w-full max-w-md">
         <FilterPanel
           sportQuery={sportQuery}
           experienceFilter={experienceFilter}
