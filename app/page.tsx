@@ -71,14 +71,18 @@ export default async function Home(
     },
   });
 
+    const backgroundStyle = !hasSearch
+    ? {
+        backgroundImage: "url('/images/background.jpg')",
+        backgroundSize: "cover" as const,
+        backgroundPosition: "center" as const,
+      }
+    : {};
+
   return (
     <div
       className="min-h-screen bg-gray-50 flex flex-col justify-start items-center pt-16 pb-12 px-8"
-      style={{
-        backgroundImage: "url('/images/background.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      style={backgroundStyle}
     >
       {/* Translucent green box around title + first-visit search */}
       {!hasSearch && (
