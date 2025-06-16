@@ -1,38 +1,9 @@
-import React, { useState } from 'react';
-import Form from 'next/form';
-import { createPost } from './actions';
+"use client";
 
-// Define amenity keys and their type
-type AmenityKey =
-  | 'hasGym'
-  | 'hasPool'
-  | 'hasParking'
-  | 'hasShowers'
-  | 'hasCafe'
-  | 'hasLifts'
-  | 'hasDisabledAccess';
-
-// Map each amenity key to a boolean
-type Amenities = Record<AmenityKey, boolean>;
+import Form from "next/form";
+import { createPost } from "./actions";
 
 export default function NewPost() {
-  const [level, setLevel] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
-  const [socialType, setSocialType] = useState<'social' | 'competitive'>('social');
-  const [ageGroup, setAgeGroup] = useState<'Under 18s' | '18+' | 'All Ages'>('All Ages');
-  const [amenities, setAmenities] = useState<Amenities>({
-    hasGym: false,
-    hasPool: false,
-    hasParking: false,
-    hasShowers: false,
-    hasCafe: false,
-    hasLifts: false,
-    hasDisabledAccess: false,
-  });
-
-  const toggleAmenity = (key: AmenityKey) => {
-    setAmenities((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
   return (
     <div className="max-w-2xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Add New Club</h1>
@@ -60,24 +31,18 @@ export default function NewPost() {
           />
         </div>
 
-        {/* Experience Level as Buttons */}
+        {/* Experience Level */}
         <div>
-          <label className="block text-lg font-medium mb-2">Experience Level</label>
-          <div className="flex space-x-2">
-            {(['beginner', 'intermediate', 'advanced'] as const).map((opt) => (
-              <button
-                type="button"
-                key={opt}
-                onClick={() => setLevel(opt)}
-                className={`px-4 py-2 rounded-lg focus:outline-none ${
-                  level === opt ? 'bg-accent text-white' : 'bg-gray-200'
-                }`}
-              >
-                {opt.charAt(0).toUpperCase() + opt.slice(1)}
-              </button>
-            ))}
-          </div>
-          <input type="hidden" name="level" value={level} />
+          <label htmlFor="level" className="block text-lg font-medium mb-2">Experience Level</label>
+          <select
+            id="level"
+            name="level"
+            className="w-full px-4 py-2 border rounded-lg"
+          >
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
         </div>
 
         {/* Cover Image URL */}
@@ -141,24 +106,18 @@ export default function NewPost() {
           </div>
         </div>
 
-        {/* Social as Buttons */}
+        {/* Social */}
         <div>
-          <label className="block text-lg font-medium mb-2">Social</label>
-          <div className="flex space-x-2">
-            {( ['social', 'competitive'] as const ).map((opt) => (
-              <button
-                type="button"
-                key={opt}
-                onClick={() => setSocialType(opt)}
-                className={`px-4 py-2 rounded-lg focus:outline-none ${
-                  socialType === opt ? 'bg-accent text-white' : 'bg-gray-200'
-                }`}
-              >
-                {opt.charAt(0).toUpperCase() + opt.slice(1)}
-              </button>
-            ))}
-          </div>
-          <input type="hidden" name="social" value={socialType} />
+          <label htmlFor="social" className="block text-lg font-medium mb-2">Social</label>
+          <select
+            id="social"
+            name="social"
+            required
+            className="w-full px-4 py-2 border rounded-lg"
+          >
+            <option value="Social">Social</option>
+            <option value="Competitive">Competitive</option>
+          </select>
         </div>
 
         {/* Cost Per Month */}
@@ -172,24 +131,19 @@ export default function NewPost() {
           />
         </div>
 
-        {/* Age Group as Buttons */}
+        {/* Age Group */}
         <div>
-          <label className="block text-lg font-medium mb-2">Age Group</label>
-          <div className="flex space-x-2">
-            {( ['Under 18s', '18+', 'All Ages'] as const ).map((opt) => (
-              <button
-                type="button"
-                key={opt}
-                onClick={() => setAgeGroup(opt)}
-                className={`px-4 py-2 rounded-lg focus:outline-none ${
-                  ageGroup === opt ? 'bg-accent text-white' : 'bg-gray-200'
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-          <input type="hidden" name="ageGroup" value={ageGroup} />
+          <label htmlFor="ageGroup" className="block text-lg font-medium mb-2">Age Group</label>
+          <select
+            id="ageGroup"
+            name="ageGroup"
+            required
+            className="w-full px-4 py-2 border rounded-lg"
+          >
+            <option value="Under 18s">Under 18s</option>
+            <option value="18+">18+</option>
+            <option value="All Ages">All Ages</option>
+          </select>
         </div>
 
         {/* Member Count */}
@@ -214,25 +168,30 @@ export default function NewPost() {
           />
         </div>
 
-        {/* Amenities as Toggle Buttons */}
+        {/* Amenities */}
         <fieldset className="space-y-2">
           <legend className="text-lg font-medium">Amenities</legend>
-          <div className="flex flex-wrap gap-2">
-            {(Object.keys(amenities) as AmenityKey[]).map((key) => (
-              <React.Fragment key={key}>
-                <button
-                  type="button"
-                  onClick={() => toggleAmenity(key)}
-                  className={`px-4 py-2 rounded-lg focus:outline-none ${
-                    amenities[key] ? 'bg-accent text-white' : 'bg-gray-200'
-                  }`}
-                >
-                  {key.replace('has', '')}
-                </button>
-                <input type="hidden" name={key} value={amenities[key].toString()} />
-              </React.Fragment>
-            ))}
-          </div>
+          <label className="inline-flex items-center">
+            <input type="checkbox" name="hasGym" className="mr-2" /> Gym
+          </label>
+          <label className="inline-flex items-center">
+            <input type="checkbox" name="hasPool" className="mr-2" /> Pool
+          </label>
+          <label className="inline-flex items-center">
+            <input type="checkbox" name="hasParking" className="mr-2" /> Parking
+          </label>
+          <label className="inline-flex items-center">
+            <input type="checkbox" name="hasShowers" className="mr-2" /> Showers
+          </label>
+          <label className="inline-flex items-center">
+            <input type="checkbox" name="hasCafe" className="mr-2" /> Cafe
+          </label>
+          <label className="inline-flex items-center">
+            <input type="checkbox" name="hasLifts" className="mr-2" /> Lifts
+          </label>
+          <label className="inline-flex items-center">
+            <input type="checkbox" name="hasDisabledAccess" className="mr-2" /> Disabled Access
+          </label>
         </fieldset>
 
         {/* Description */}
@@ -246,7 +205,7 @@ export default function NewPost() {
           />
         </div>
 
-        <button type="submit" className="w-full bg-[rgba(34,69,44,0.9)] text-white py-3 rounded-lg hover:bg-accent">
+        <button type="submit" className="w-full bg-[rgba(34,69,44,0.9)] text-white py-3 rounded-lg hover:bg-accent-600">
           Add Club
         </button>
       </Form>
