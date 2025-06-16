@@ -20,7 +20,7 @@ function Label({
       className={`block text-lg font-medium mb-2 ${className}`}
     >
       {children}
-      {required && <span className="text-accentColour ml-1">*</span>}
+      {required && <span className="text-accent ml-1">*</span>}
     </label>
   );
 }
