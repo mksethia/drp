@@ -54,6 +54,7 @@ export default async function Home(
 
   // Numeric filters (parsed to number or fallback)
   const maxCost = Number(searchParams.maxCost) || 200;
+  const minMemberCount = Number(searchParams.minMembers) || 0;
   const maxMemberCount = Number(searchParams.maxMembers) || 1000;
   const maxTrainingFreq = Number(searchParams.maxTrainingFreq) || 7;
 
@@ -73,6 +74,7 @@ export default async function Home(
       socialFilter ||
       ageGroupFilter ||
       maxCost < 200 ||
+      minMemberCount > 0 ||
       maxMemberCount < 1000 ||
       maxTrainingFreq < 7 ||
       hasGymFilter ||
@@ -102,6 +104,8 @@ export default async function Home(
     where.social = { equals: socialFilter, mode: "insensitive" };
   if (ageGroupFilter) where.ageGroup = ageGroupFilter;
   if (maxCost < 200) where.costPerMonth = { lte: maxCost };
+  if (minMemberCount > 0)
+    where.memberCount = { gte: minMemberCount };
   if (maxMemberCount < 1000)
     where.memberCount = { lte: maxMemberCount };
   if (maxTrainingFreq < 7)
@@ -159,6 +163,7 @@ export default async function Home(
             socialFilter={socialFilter}
             ageGroupFilter={ageGroupFilter}
             maxCost={maxCost}
+            minMemberCount={minMemberCount}
             maxMemberCount={maxMemberCount}
             maxTrainingFreq={maxTrainingFreq}
             hasGymFilter={hasGymFilter}
@@ -183,6 +188,7 @@ export default async function Home(
                 socialFilter={socialFilter}
                 ageGroupFilter={ageGroupFilter}
                 maxCost={maxCost}
+                minMemberCount={minMemberCount}
                 maxMemberCount={maxMemberCount}
                 maxTrainingFreq={maxTrainingFreq}
                 hasGymFilter={hasGymFilter}

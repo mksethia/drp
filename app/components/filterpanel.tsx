@@ -1,13 +1,16 @@
 "use client";
 
+import { useState } from "react";
+
 type Props = {
   sportQuery: string;
   experienceFilter: string;
   socialFilter: string;
   ageGroupFilter: string;
   maxCost: number;
-  maxMemberCount: number;
   maxTrainingFreq: number;
+  minMemberCount: number;
+  maxMemberCount: number;
   hasGymFilter: boolean;
   hasPoolFilter: boolean;
   hasParkingFilter: boolean;
@@ -25,8 +28,9 @@ export default function FilterPanel({
   socialFilter,
   ageGroupFilter,
   maxCost,
-  maxMemberCount,
   maxTrainingFreq,
+  minMemberCount,
+  maxMemberCount,
   hasGymFilter,
   hasPoolFilter,
   hasParkingFilter,
@@ -36,6 +40,13 @@ export default function FilterPanel({
   hasDisabledAccessFilter,
   showFilters = true,
 }: Props) {
+  const [cost, setCost] = useState<number>(maxCost);
+  const [trainingFreq, setTrainingFreq] = useState<number>(maxTrainingFreq);
+  const [memberCountRange, setMemberCountRange] = useState<[number, number]>([
+    minMemberCount,
+    maxMemberCount,
+  ]);
+
   const SearchInput = (
     <div className="relative">
       <input
@@ -99,7 +110,7 @@ export default function FilterPanel({
           {/* Cost per month slider */}
           <div>
             <label htmlFor="maxCost" className="block text-white text-sm font-medium">
-              Max cost per month: {maxCost}
+              Max cost per month: {cost}
             </label>
             <input
               type="range"
@@ -107,7 +118,61 @@ export default function FilterPanel({
               id="maxCost"
               min={0}
               max={200}
-              defaultValue={maxCost}
+              value={cost}
+              onChange={(e) => setCost(Number(e.target.value))}
+              className="mt-2 w-full"
+            />
+          </div>
+
+          {/* Member count double-ended slider */}
+          <div>
+            <label htmlFor="minMembers" className="block text-white text-sm font-medium">
+              Min member count: {memberCountRange[0]}
+            </label>
+            <input
+              type="range"
+              name="minMembers"
+              id="minMembers"
+              min={0}
+              max={1000}
+              value={memberCountRange[0]}
+              onChange={(e) => {
+                const newMin = Math.min(Number(e.target.value), memberCountRange[1]);
+                setMemberCountRange([newMin, memberCountRange[1]]);
+              }}
+              className="mt-2 w-full"
+            />
+            <label htmlFor="maxMembers" className="block text-white text-sm font-medium">
+              Max member count: {memberCountRange[1]}
+            </label>
+            <input
+              type="range"
+              name="maxMembers"
+              id="maxMembers"
+              min={0}
+              max={1000}
+              value={memberCountRange[1]}
+              onChange={(e) => {
+                const newMax = Math.max(Number(e.target.value), memberCountRange[0]);
+                setMemberCountRange([memberCountRange[0], newMax]);
+              }}
+              className="mt-2 w-full"
+            />
+          </div>
+
+          {/* Training frequency slider */}
+          <div>
+            <label htmlFor="maxTrainingFreq" className="block text-white text-sm font-medium">
+              Max training sessions per week: {trainingFreq}
+            </label>
+            <input
+              type="range"
+              name="maxTrainingFreq"
+              id="maxTrainingFreq"
+              min={0}
+              max={7}
+              value={trainingFreq}
+              onChange={(e) => setTrainingFreq(Number(e.target.value))}
               className="mt-2 w-full"
             />
           </div>
@@ -131,62 +196,72 @@ export default function FilterPanel({
             </select>
           </div>
 
-          {/* Member count slider */}
-          <div>
-            <label htmlFor="maxMembers" className="block text-white text-sm font-medium">
-              Max member count: {maxMemberCount}
-            </label>
-            <input
-              type="range"
-              name="maxMembers"
-              id="maxMembers"
-              min={0}
-              max={1000}
-              defaultValue={maxMemberCount}
-              className="mt-2 w-full"
-            />
-          </div>
-
-          {/* Training frequency slider */}
-          <div>
-            <label htmlFor="maxTrainingFreq" className="block text-white text-sm font-medium">
-              Max training sessions per week: {maxTrainingFreq}
-            </label>
-            <input
-              type="range"
-              name="maxTrainingFreq"
-              id="maxTrainingFreq"
-              min={0}
-              max={7}
-              defaultValue={maxTrainingFreq}
-              className="mt-2 w-full"
-            />
-          </div>
-
           {/* Facilities checkboxes */}
           <fieldset className="space-y-2">
             <legend className="block text-white text-sm font-medium">Facilities</legend>
             <div className="flex flex-wrap gap-4">
               <label className="inline-flex items-center text-white text-sm">
-                <input type="checkbox" name="hasGym" defaultChecked={hasGymFilter} className="mr-2" /> Gym
+                <input
+                  type="checkbox"
+                  name="hasGym"
+                  defaultChecked={hasGymFilter}
+                  className="mr-2"
+                />
+                Needs gym
               </label>
               <label className="inline-flex items-center text-white text-sm">
-                <input type="checkbox" name="hasPool" defaultChecked={hasPoolFilter} className="mr-2" /> Pool
+                <input
+                  type="checkbox"
+                  name="hasPool"
+                  defaultChecked={hasPoolFilter}
+                  className="mr-2"
+                />
+                Needs pool
               </label>
               <label className="inline-flex items-center text-white text-sm">
-                <input type="checkbox" name="hasParking" defaultChecked={hasParkingFilter} className="mr-2" /> Parking
+                <input
+                  type="checkbox"
+                  name="hasParking"
+                  defaultChecked={hasParkingFilter}
+                  className="mr-2"
+                />
+                Needs parking
               </label>
               <label className="inline-flex items-center text-white text-sm">
-                <input type="checkbox" name="hasShowers" defaultChecked={hasShowersFilter} className="mr-2" /> Showers
+                <input
+                  type="checkbox"
+                  name="hasShowers"
+                  defaultChecked={hasShowersFilter}
+                  className="mr-2"
+                />
+                Needs showers
               </label>
               <label className="inline-flex items-center text-white text-sm">
-                <input type="checkbox" name="hasCafe" defaultChecked={hasCafeFilter} className="mr-2" /> Cafe
+                <input
+                  type="checkbox"
+                  name="hasCafe"
+                  defaultChecked={hasCafeFilter}
+                  className="mr-2"
+                />
+                Needs cafe
               </label>
               <label className="inline-flex items-center text-white text-sm">
-                <input type="checkbox" name="hasLifts" defaultChecked={hasLiftsFilter} className="mr-2" /> Lifts
+                <input
+                  type="checkbox"
+                  name="hasLifts"
+                  defaultChecked={hasLiftsFilter}
+                  className="mr-2"
+                />
+                Needs lifts
               </label>
               <label className="inline-flex items-center text-white text-sm">
-                <input type="checkbox" name="hasDisabledAccess" defaultChecked={hasDisabledAccessFilter} className="mr-2" /> Disabled Access
+                <input
+                  type="checkbox"
+                  name="hasDisabledAccess"
+                  defaultChecked={hasDisabledAccessFilter}
+                  className="mr-2"
+                />
+                Needs disabled access
               </label>
             </div>
           </fieldset>
