@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <header className="w-full bg-transparent shadow-md py-4 px-8">
       <nav className="flex justify-between items-center">
-        <Link href="/" className="text-xl text-[#ffffff] font-bold text-gray-800 hover:text-[#ffffff] transition-colors">
+        <Link href="/" className="text-white text-xl text-[#ffffff] font-bold text-gray-800 hover:text-[#ffffff] transition-colors">
           NEXTPLAY
         </Link>
         <div className="flex items-center space-x-4">

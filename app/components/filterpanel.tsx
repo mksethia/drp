@@ -36,7 +36,7 @@ export default function FilterPanel({
 
       {/* only render the extra filters if showFilters is true */}
       {showFilters && (
-        <>
+        <div className="rounded-lg bg-white p-4 shadow-md space-y-4">
           {/* experience level */}
           <div>
             <label htmlFor="experience" className="block text-sm font-medium text-gray-700">
@@ -73,7 +73,7 @@ export default function FilterPanel({
               <option>Training Only</option>
             </select>
           </div>
-        </>
+        </div>
       )}
     </form>
   );
