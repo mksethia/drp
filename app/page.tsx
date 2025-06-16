@@ -77,18 +77,9 @@ export default async function Home(
     },
   });
 
-    const backgroundStyle = !hasSearch
-    ? {
-        backgroundImage: "url('/images/background.jpg')",
-        backgroundSize: "cover" as const,
-        backgroundPosition: "center" as const,
-      }
-    : {};
-
   return (
-    <div
-      className="containerClasses"
-    >
+    // eslint-disable-next-line no-unused-vars
+    <div className="containerClasses">
       {/* Translucent green box around title + first-visit search */}
       {!hasSearch && (
         <div className="w-full max-w-[40rem] bg-[#22452c] bg-opacity-5 rounded-2xl p-8 shadow-lg">
