@@ -48,7 +48,7 @@ export default async function Home(
   const containerClasses = [
     "min-h-screen",
     "flex flex-col justify-start items-center pt-16 pb-12 px-8",
-    hasSearch ? "bg-gray-50" : "bg-[url('/images/background.jpg')] bg-cover bg-center"
+    hasSearch ? "bg-gray-50" : ""
   ].join(" ");
 
   // Build Prisma where clause

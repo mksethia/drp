@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 
 export default function Header() {
@@ -9,8 +10,14 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-transparent shadow-md py-4 px-8">
       <nav className="flex justify-between items-center">
-        <Link href="/" className="text-white text-xl text-[#ffffff] font-bold text-gray-800 hover:text-[#ffffff] transition-colors">
-          NEXTPLAY
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/images/logo.png"
+            alt="NEXTPLAY logo"
+            width={120}   // adjust to your logo’s natural dimensions
+            height={40}   // adjust to your logo’s natural dimensions
+            priority      // optional: for critical images like a logo
+          />
         </Link>
         <div className="flex items-center space-x-4">
           {session ? (
@@ -35,7 +42,7 @@ export default function Header() {
               </div>
             </>
           ) : (
-            <Link href="/login" className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-600 transition">
+            <Link href="/login" className="bg-white text-accent px-4 py-2 rounded-lg transition">
               Sign In
             </Link>
           )}
