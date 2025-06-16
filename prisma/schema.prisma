@@ -27,16 +27,26 @@ model Post {
 }
 
 model Club {
-  id    Int    @id @default(autoincrement())
-  name  String
-  sport String
-  level String
-  imageUrl String?
-  images    String[]  @default([])
-  facilitiesImage String?
-  latitude Float
-  longitude Float
-  social String
-  cost   Float
-  isElite  Boolean @default(false)
+  id            Int @id @default(autoincrement())
+  name          String
+  sport         String @default("football")
+  expLevel      String @default("beginner")
+  coverImg      String @default("https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500")
+  images        String[] @default(["https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500"])
+  latitude      Float 
+  longitude     Float
+  social        String @default("Social")
+  costPerMonth  Int @default(30)
+  ageGroup      String @default("All Ages")
+  memberCount   Int @default(37)
+  trainingFreq  Int @default(2) 
+  hasGym        Boolean @default(false)
+  hasPool       Boolean @default(false)
+  hasParking    Boolean @default(false)
+  hasShowers    Boolean @default(false)
+  hasCafe       Boolean @default(false)
+  hasLifts      Boolean @default(false)
+  hasDisabledAccess Boolean @default(false)
+
+  description String @default("No description provided")
 }

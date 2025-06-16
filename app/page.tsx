@@ -1,4 +1,3 @@
-// app/page.tsx (Server Component)
 import prisma from "@/lib/prisma";
 import type { Club, Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -11,10 +10,10 @@ import FilterPanel from "@/app/components/filterpanel";
 // Force dynamic rendering for data freshness
 export const dynamic = "force-dynamic";
 
+type SearchParams = Record<string, string | string[] | undefined>;
+
 export default async function Home(
-  props: {
-    searchParams: Promise<Record<string, string | string[] | undefined>>;
-  }
+  props: { searchParams: Promise<SearchParams> }
 ) {
   const searchParams = await props.searchParams;
 
@@ -23,39 +22,99 @@ export default async function Home(
   if (!tableExists) redirect("/setup");
 
   // Extract & normalize filters from searchParams
+  // Sport query
   let rawSport = searchParams.sport;
   if (Array.isArray(rawSport)) rawSport = rawSport[0];
   const sportQuery = rawSport?.trim() ?? "";
 
+  // Experience level
   let rawExperience = searchParams.experience;
   if (Array.isArray(rawExperience)) rawExperience = rawExperience[0];
-  const allowedLevels = ["beginner", "intermediate", "advanced", "open to all"];
+  const allowedLevels = ["beginner", "intermediate", "expert"];
   const experienceFilter =
     allowedLevels.includes(rawExperience?.toLowerCase() ?? "")
       ? rawExperience!.toLowerCase()
       : "";
 
+  // Social level
   let rawSocial = searchParams.social;
   if (Array.isArray(rawSocial)) rawSocial = rawSocial[0];
-  const socialAllowed = ["Very Social", "Social", "Training Only"];
+  const socialAllowed = ["social", "competitive"];
   const socialFilter =
-    socialAllowed.includes(rawSocial ?? "")
-      ? rawSocial!
+    socialAllowed.includes(rawSocial?.toLowerCase() ?? "")
+      ? rawSocial!.toLowerCase()
       : "";
 
-  const hasSearch = Boolean(sportQuery || experienceFilter || socialFilter);
+  // Age group
+  let rawAgeGroup = searchParams.ageGroup;
+  if (Array.isArray(rawAgeGroup)) rawAgeGroup = rawAgeGroup[0];
+  const ageGroups = ["All Ages", "Under 18s", "Adults", "Seniors"];
+  const ageGroupFilter =
+    ageGroups.includes(rawAgeGroup ?? "") ? rawAgeGroup! : "";
+
+  // Numeric filters (parsed to number or fallback)
+  const maxCost = Number(searchParams.maxCost) || 200;
+  const maxMemberCount = Number(searchParams.maxMembers) || 1000;
+  const maxTrainingFreq = Number(searchParams.maxTrainingFreq) || 7;
+
+  // Boolean facility filters
+  const hasGymFilter = searchParams.hasGym === 'on';
+  const hasPoolFilter = searchParams.hasPool === 'on';
+  const hasParkingFilter = searchParams.hasParking === 'on';
+  const hasShowersFilter = searchParams.hasShowers === 'on';
+  const hasCafeFilter = searchParams.hasCafe === 'on';
+  const hasLiftsFilter = searchParams.hasLifts === 'on';
+  const hasDisabledAccessFilter = searchParams.hasDisabledAccess === 'on';
+
+  const hasSearch =
+    Boolean(
+      sportQuery ||
+      experienceFilter ||
+      socialFilter ||
+      ageGroupFilter ||
+      maxCost < 200 ||
+      maxMemberCount < 1000 ||
+      maxTrainingFreq < 7 ||
+      hasGymFilter ||
+      hasPoolFilter ||
+      hasParkingFilter ||
+      hasShowersFilter ||
+      hasCafeFilter ||
+      hasLiftsFilter ||
+      hasDisabledAccessFilter
+    );
 
   const containerClasses = [
     "min-h-screen",
     "flex flex-col justify-start items-center pt-16 pb-12 px-8",
-    hasSearch ? "bg-gray-50" : "bg-[url('/images/background.jpg')] bg-cover bg-center"
+    hasSearch
+      ? "bg-gray-50"
+      : "bg-[url('/images/background.jpg')] bg-cover bg-center",
   ].join(" ");
 
   // Build Prisma where clause
   const where: Prisma.ClubWhereInput = {};
-  if (sportQuery) where.sport = { contains: sportQuery, mode: "insensitive" };
-  if (experienceFilter) where.level = { equals: experienceFilter, mode: "insensitive" };
-  if (socialFilter) where.social = { equals: socialFilter, mode: "insensitive" };
+  if (sportQuery)
+    where.sport = { contains: sportQuery, mode: "insensitive" };
+  if (experienceFilter)
+    where.expLevel = { equals: experienceFilter, mode: "insensitive" };
+  if (socialFilter)
+    where.social = { equals: socialFilter, mode: "insensitive" };
+  if (ageGroupFilter) where.ageGroup = ageGroupFilter;
+  if (maxCost < 200) where.costPerMonth = { lte: maxCost };
+  if (maxMemberCount < 1000)
+    where.memberCount = { lte: maxMemberCount };
+  if (maxTrainingFreq < 7)
+    where.trainingFreq = { lte: maxTrainingFreq };
+
+  // Facilities
+  if (hasGymFilter) where.hasGym = true;
+  if (hasPoolFilter) where.hasPool = true;
+  if (hasParkingFilter) where.hasParking = true;
+  if (hasShowersFilter) where.hasShowers = true;
+  if (hasCafeFilter) where.hasCafe = true;
+  if (hasLiftsFilter) where.hasLifts = true;
+  if (hasDisabledAccessFilter) where.hasDisabledAccess = true;
 
   // Fetch up to 50 clubs matching filters
   const clubs: Club[] = await prisma.club.findMany({
@@ -65,15 +124,24 @@ export default async function Home(
       id: true,
       name: true,
       sport: true,
-      level: true,
-      imageUrl: true,
+      expLevel: true,
+      coverImg: true,
       images: true,
-      facilitiesImage: true,
       latitude: true,
       longitude: true,
       social: true,
-      cost: true,
-      isElite: true,
+      ageGroup: true,
+      costPerMonth: true,
+      memberCount: true,
+      trainingFreq: true,
+      hasGym: true,
+      hasPool: true,
+      hasParking: true,
+      hasShowers: true,
+      hasCafe: true,
+      hasLifts: true,
+      hasDisabledAccess: true,
+      description: true,
     },
   });
 
@@ -89,6 +157,17 @@ export default async function Home(
             sportQuery={sportQuery}
             experienceFilter={experienceFilter}
             socialFilter={socialFilter}
+            ageGroupFilter={ageGroupFilter}
+            maxCost={maxCost}
+            maxMemberCount={maxMemberCount}
+            maxTrainingFreq={maxTrainingFreq}
+            hasGymFilter={hasGymFilter}
+            hasPoolFilter={hasPoolFilter}
+            hasParkingFilter={hasParkingFilter}
+            hasShowersFilter={hasShowersFilter}
+            hasCafeFilter={hasCafeFilter}
+            hasLiftsFilter={hasLiftsFilter}
+            hasDisabledAccessFilter={hasDisabledAccessFilter}
             showFilters={false}
           />
         </div>
@@ -102,6 +181,17 @@ export default async function Home(
                 sportQuery={sportQuery}
                 experienceFilter={experienceFilter}
                 socialFilter={socialFilter}
+                ageGroupFilter={ageGroupFilter}
+                maxCost={maxCost}
+                maxMemberCount={maxMemberCount}
+                maxTrainingFreq={maxTrainingFreq}
+                hasGymFilter={hasGymFilter}
+                hasPoolFilter={hasPoolFilter}
+                hasParkingFilter={hasParkingFilter}
+                hasShowersFilter={hasShowersFilter}
+                hasCafeFilter={hasCafeFilter}
+                hasLiftsFilter={hasLiftsFilter}
+                hasDisabledAccessFilter={hasDisabledAccessFilter}
                 showFilters={true}
               />
             </div>
@@ -119,13 +209,13 @@ export default async function Home(
               {clubs.map((club) => (
                 <Link href={`/posts/${club.id}`} key={club.id}>
                   <div className="border rounded-lg shadow-md bg-white p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-                    {club.imageUrl && (
+                    {club.coverImg && (
                       <div className="relative w-full h-40 mb-4">
                         <Image
-                          src={club.imageUrl}
+                          src={club.coverImg}
                           alt={club.name}
                           fill
-                          className="object-cover rounded-md"
+                          className="object-cover rounded-md"                         
                           unoptimized
                         />
                       </div>
@@ -137,16 +227,22 @@ export default async function Home(
                       Sport: <span className="font-medium">{club.sport}</span>
                     </p>
                     <p className="text-sm text-gray-500">
-                      Level:{' '}
-                      <span className="font-medium capitalize">
-                        {club.level}
-                      </span>
+                      Level: <span className="font-medium capitalize">{club.expLevel}</span>
                     </p>
                     <p className="text-sm text-gray-500">
-                      Social Level:{' '}
-                      <span className="font-medium capitalize">
-                        {club.social}
-                      </span>
+                      Social: <span className="font-medium capitalize">{club.social}</span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Age Group: <span className="font-medium">{club.ageGroup}</span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Cost: <span className="font-medium">£{club.costPerMonth}</span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Members: <span className="font-medium">{club.memberCount}</span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Sessions/week: <span className="font-medium">{club.trainingFreq}</span>
                     </p>
                   </div>
                 </Link>
