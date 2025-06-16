@@ -72,7 +72,7 @@ export default async function Home(
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center py-24 px-8"
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-start items-center pt-16 pb-12 px-8"
       style={{
         backgroundImage: "url('/images/background.jpg')",
         backgroundSize: "cover",
