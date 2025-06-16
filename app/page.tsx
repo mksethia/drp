@@ -72,32 +72,32 @@ export default async function Home(
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-start items-center pt-16 pb-12 px-8"
+    <div
+      className="min-h-screen bg-gray-50 flex flex-col justify-start items-center pt-16 pb-12 px-8"
       style={{
         backgroundImage: "url('/images/background.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-      }}>
-      <h1 className="text-5xl font-semibold mb-6 text-[#333333]">
-        The most powerful way to discover sports clubs
-      </h1>
-
-      {/* First‐visit: just the search bar */}
-      {!hasSearch && (<div className="w-full max-w-md">
-        <FilterPanel
-          sportQuery={sportQuery}
-          experienceFilter={experienceFilter}
-          socialFilter={socialFilter}
-          showFilters={false}
-        />
-      </div>
+      }}
+    >
+      {/* Translucent green box around title + first-visit search */}
+      {!hasSearch && (
+        <div className="w-full max-w-md bg-green-500 bg-opacity-20 rounded-2xl p-8 shadow-lg">
+          <h1 className="text-5xl font-semibold mb-6 text-[#333333]">
+            The most powerful way to discover sports clubs
+          </h1>
+          <FilterPanel
+            sportQuery={sportQuery}
+            experienceFilter={experienceFilter}
+            socialFilter={socialFilter}
+            showFilters={false}
+          />
+        </div>
       )}
 
-      {/* After first search: two‐column layout + results */}
       {hasSearch && (
         <>
           <div className="flex w-full max-w-6xl mb-12">
-            {/* left: full filters */}
             <div className="w-1/3 pr-6">
               <FilterPanel
                 sportQuery={sportQuery}
@@ -106,7 +106,6 @@ export default async function Home(
                 showFilters={true}
               />
             </div>
-            {/* right: map */}
             <div className="w-2/3">
               <ClubMap clubs={clubs} />
             </div>
@@ -139,13 +138,13 @@ export default async function Home(
                       Sport: <span className="font-medium">{club.sport}</span>
                     </p>
                     <p className="text-sm text-gray-500">
-                      Level:{" "}
+                      Level:{' '}
                       <span className="font-medium capitalize">
                         {club.level}
                       </span>
                     </p>
                     <p className="text-sm text-gray-500">
-                      Social Level:{" "}
+                      Social Level:{' '}
                       <span className="font-medium capitalize">
                         {club.social}
                       </span>
