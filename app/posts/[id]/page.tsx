@@ -39,7 +39,7 @@ export default async function ClubPage({ params }: Props) {
             className="w-full h-64 object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-            <h1 className="text-4xl font-extrabold text-white">
+            <h1 className="text-4xl font-bold text-white">
               {club.name}
             </h1>
           </div>
