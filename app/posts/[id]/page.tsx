@@ -22,13 +22,6 @@ export default async function ClubPage({ params }: { params: { id: string } }) {
 
   if (!club) notFound();
 
-  // Server action to delete the club
-  async function deleteClub() {
-    "use server";
-    await prisma.club.delete({ where: { id: clubId } });
-    redirect("/clubs");
-  }
-
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
@@ -150,16 +143,6 @@ export default async function ClubPage({ params }: { params: { id: string } }) {
               <Slideshow images={club.images} />
             </div>
           )}
-
-          {/* Delete Button */}
-          <form action={deleteClub} className="mt-8">
-            <button
-              type="submit"
-              className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
-            >
-              Delete Club
-            </button>
-          </form>
         </div>
       </div>
     </div>
