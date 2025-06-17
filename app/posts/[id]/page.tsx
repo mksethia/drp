@@ -16,8 +16,14 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default async function ClubPage({ params }: { params: { id: string } }) {
-  const clubId = parseInt(params.id, 10);
+
+interface Props {
+  params: Promise<{ id: string }>;
+}
+
+export default async function ClubPage({ params }: Props) {
+  const { id } = await params;
+  const clubId = parseInt(id, 10);
   const club = await prisma.club.findUnique({ where: { id: clubId } });
 
   if (!club) notFound();
